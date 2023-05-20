@@ -1,4 +1,3 @@
-
 package main;
 
 import java.sql.Connection;
@@ -8,16 +7,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class conexion {
-    String bd="motorinferencia";
-    String url="jdbc:mysql://localhost:3308/";
 
-    String user="prueba";
-    String password="";
-    String driver="com.mysql.cj.jdbc.Driver";
+    String bd = "motorinferencia";
+    String url = "jdbc:mysql://localhost:3308/";
+
+    String user = "prueba";
+    String password = "";
+    String driver = "com.mysql.cj.jdbc.Driver";
     Connection connect;
 
-    public conexion(){
-        
+    public conexion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
@@ -25,24 +24,22 @@ public class conexion {
             System.out.println(ex.getMessage());
 
         }
-    
     }
-    
-    
-public Connection conectar(){
+
+    public Connection conectar() {
         try {
             Class.forName(driver);
-            connect = DriverManager.getConnection(url+bd+"?serverTimezone=GMT-5",user,password);
+            connect = DriverManager.getConnection(url + bd + "?serverTimezone=GMT-5", user, password);
             System.out.println("Se logró la conexion");
-            
-        } catch (ClassNotFoundException|SQLException ex) {
+
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("No se conecto a bd");
         }
-    return connect;
-    }   
+        return connect;
+    }
 
-public void desconectar(){
+    public void desconectar() {
         try {
             connect.close();
             System.out.println("Se logró desconectar");
@@ -50,11 +47,10 @@ public void desconectar(){
             Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("no se desconecto");
         }
-}
+    }
 
     public static void main(String[] args) {
-        conexion conect=new conexion();
+        conexion conect = new conexion();
         conect.conectar();
-        
     }
 }
