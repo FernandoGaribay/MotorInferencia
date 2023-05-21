@@ -1,35 +1,31 @@
 package main;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class OpcionRespuesta {
     private String dimension;
     private String texto;
-    private Map<String, Integer> puntajes;
+    private int puntaje;
 
     public OpcionRespuesta(String texto) {
         this.texto = texto;
-        this.puntajes = new HashMap<>();
     }
     
-    public OpcionRespuesta(String texto, String personalidad, int puntaje) {
+    public OpcionRespuesta(String texto, String dimension, int puntaje) {
         this.texto = texto;
-        this.puntajes = new HashMap<>();
-        this.agregarPuntaje(personalidad, puntaje);
+        this.puntaje = puntaje;
+        this.dimension = dimension;
     }
     
-    public void agregarPuntaje(String personalidad, int puntaje) {
-        dimension = personalidad;
-        puntajes.put(personalidad, puntaje);
+    public void agregarPuntaje(String dimension, int puntaje) {
+        this.puntaje = puntaje;
+        this.dimension = dimension;
     }
 
     public String getTexto() {
         return texto;
     }
 
-    public Map<String, Integer> getPuntajes() {
-        return puntajes;
+    public int getPuntaje() {
+        return puntaje;
     }
     
     public String getDimension() {

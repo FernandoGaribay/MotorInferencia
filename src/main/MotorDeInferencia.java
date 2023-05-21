@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MotorDeInferencia {
+
     private Map<String, Integer> puntajes;
 
     public MotorDeInferencia() {
@@ -16,20 +17,15 @@ public class MotorDeInferencia {
     public void evaluarRespuestas(List<Respuesta> respuestas) {
         for (Respuesta respuesta : respuestas) {
             String dimension = respuesta.getOpcionSeleccionada().getDimension();
-            Map<String, Integer> puntajesOpcion = respuesta.getOpcionSeleccionada().getPuntajes();
+            int puntaje = respuesta.getOpcionSeleccionada().getPuntaje();
 
-            for (Map.Entry<String, Integer> entry : puntajesOpcion.entrySet()) {
-                String personalidad = entry.getKey();
-                int puntaje = entry.getValue();
-
-                if (puntajes.containsKey(personalidad)) {
-                    int puntajeExistente = puntajes.get(personalidad);
-                    puntajes.put(personalidad, puntajeExistente + puntaje);
-                }
+            if (puntajes.containsKey(dimension)) {
+                int puntajeExistente = puntajes.get(dimension);
+                puntajes.put(dimension, puntajeExistente + puntaje);
             }
         }
     }
-    
+
     public String obtenerResultado() {
         int puntajeMaximo = Integer.MIN_VALUE;
         String resultado = "Neutral";
@@ -40,7 +36,7 @@ public class MotorDeInferencia {
             int puntaje = entry.getValue();
             System.out.print("dimension = " + dimension);
             System.out.println("     puntaje = " + puntaje);
-            
+
             if (puntaje > puntajeMaximo) {
                 puntajeMaximo = puntaje;
                 resultado = dimension;
