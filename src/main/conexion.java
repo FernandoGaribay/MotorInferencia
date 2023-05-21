@@ -3,16 +3,19 @@ package main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 public class conexion {
 
     private String bd = "motorinferencia";
-    private String url = "jdbc:mysql://localhost:3308/";
+    private String url = "jdbc:mysql://localhost:3306/";
 
-    private String user = "prueba";
+    private String user = "root";
     private String password = "";
     private String driver = "com.mysql.cj.jdbc.Driver";
     private Connection connect;
+
+    private PreparedStatement stInsertar;
 
     public conexion() {
         try {
@@ -43,9 +46,23 @@ public class conexion {
         }
     }
 
+    public void insertarQuiz(String nombre) {
+        String sql = "INSERT INTO quizzes (nombre) VALUES (?)";
+        try {
+            stInsertar = connect.prepareStatement(sql);
+            stInsertar.setString(1, nombre);
+            stInsertar.executeUpdate();
+            System.out.println("Quiz insertado correctamente.");
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar el quiz.");
+            System.out.println(ex.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         conexion conect = new conexion();
         conect.conectar();
+        conect.insertarQuiz("Peronalidad");
         conect.desconectar();
     }
 }
