@@ -38,11 +38,11 @@ public class campoPregunta extends javax.swing.JPanel {
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Enunciado de la pregunta");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
+        jLabel1.setText("Enunciado de la pregunta:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 180, 30));
 
         jTextField1.setText("jTextField1");
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 330, 40));
+        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 430, 40));
 
         jButton1.setText("x");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -50,7 +50,7 @@ public class campoPregunta extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 50, -1));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, 50, -1));
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -60,7 +60,7 @@ public class campoPregunta extends javax.swing.JPanel {
         pnlContenedorOpciones.setLayout(new javax.swing.BoxLayout(pnlContenedorOpciones, javax.swing.BoxLayout.Y_AXIS));
         jScrollPane2.setViewportView(pnlContenedorOpciones);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 85, 330, 190));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 430, 190));
 
         jButton2.setText("Añadir");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -68,7 +68,7 @@ public class campoPregunta extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -76,6 +76,8 @@ public class campoPregunta extends javax.swing.JPanel {
         contenedor.remove(campoPregunta.this);
         contenedor.revalidate();
         contenedor.repaint();
+        System.gc(); // Sugerir al recolector de basura que se ejecute
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

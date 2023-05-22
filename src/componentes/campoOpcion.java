@@ -23,7 +23,7 @@ public class campoOpcion extends javax.swing.JPanel {
         add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 8, 20, 20));
 
         jTextField1.setText("jTextField1");
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 8, 210, -1));
+        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 8, 310, -1));
 
         jButton1.setText("x");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -31,7 +31,7 @@ public class campoOpcion extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 40, -1));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 7, 40, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -40,6 +40,8 @@ public class campoOpcion extends javax.swing.JPanel {
         contenedor.revalidate();
         contenedor.repaint();
         System.out.println(contenedor.getComponentCount());
+        System.gc(); // Sugerir al recolector de basura que se ejecute
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
