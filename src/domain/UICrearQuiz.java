@@ -1,9 +1,31 @@
 package domain;
 
+import componentes.campoPregunta;
+
 public class UICrearQuiz extends javax.swing.JFrame {
 
     public UICrearQuiz() {
         initComponents();
+
+        campoPregunta p1 = new campoPregunta();
+        campoPregunta p2 = new campoPregunta();
+        campoPregunta p3 = new campoPregunta();
+        campoPregunta p4 = new campoPregunta();
+        campoPregunta p5 = new campoPregunta();
+        campoPregunta p6 = new campoPregunta();
+        campoPregunta p7 = new campoPregunta();
+        campoPregunta p8 = new campoPregunta();
+        campoPregunta p9 = new campoPregunta();
+        pnlContenedorPreguntas.add(p1);
+        pnlContenedorPreguntas.add(p2);
+        pnlContenedorPreguntas.add(p3);
+        pnlContenedorPreguntas.add(p4);
+        pnlContenedorPreguntas.add(p5);
+        pnlContenedorPreguntas.add(p6);
+        pnlContenedorPreguntas.add(p7);
+        pnlContenedorPreguntas.add(p8);
+        pnlContenedorPreguntas.add(p9);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -17,8 +39,9 @@ public class UICrearQuiz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        pnlContenedorPreguntas = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -47,21 +70,18 @@ public class UICrearQuiz extends javax.swing.JFrame {
         jLabel3.setText("Creación de Quiz.");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 370, 30));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 370, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 310, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 370, 310));
-
         jButton1.setText("Guardar Quiz");
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 370, 30));
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(370, 310));
+
+        pnlContenedorPreguntas.setBackground(new java.awt.Color(255, 255, 255));
+        pnlContenedorPreguntas.setLayout(new javax.swing.BoxLayout(pnlContenedorPreguntas, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane2.setViewportView(pnlContenedorPreguntas);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 370, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
 
@@ -101,9 +121,10 @@ public class UICrearQuiz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel pnlContenedorPreguntas;
     // End of variables declaration//GEN-END:variables
 }
