@@ -15,7 +15,6 @@ public class UIQuiz extends javax.swing.JFrame {
     MotorDeInferencia motor = new MotorDeInferencia();
     Pregunta pregunta1;
     Pregunta pregunta2;
-    Pregunta pregunta3;
 
     public UIQuiz() {
         initComponents();
