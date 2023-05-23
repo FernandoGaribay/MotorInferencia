@@ -12,42 +12,60 @@ public class campoOpcion extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtPregunta = new javax.swing.JTextField();
+        comboRespuesta = new javax.swing.JComboBox<>();
+        apinnerPuntuacion = new javax.swing.JSpinner();
+        btnEliminar = new javax.swing.JPanel();
+        lblEliminar = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(412, 35));
+        setPreferredSize(new java.awt.Dimension(412, 35));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jRadioButton1.setBackground(new java.awt.Color(255, 255, 255));
-        add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 8, 20, 20));
+        txtPregunta.setText("Pregunta");
+        add(txtPregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 7, 190, -1));
 
-        jTextField1.setText("jTextField1");
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 8, 310, -1));
+        comboRespuesta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        add(comboRespuesta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 7, 90, -1));
+        add(apinnerPuntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 7, 50, -1));
 
-        jButton1.setText("x");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        btnEliminar.setBackground(new java.awt.Color(204, 204, 204));
+        btnEliminar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        lblEliminar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblEliminar.setText("x");
+        lblEliminar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lblEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblEliminarMouseClicked(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 7, 40, -1));
+        btnEliminar.add(lblEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 20, 20));
+
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 7, 20, 20));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void lblEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEliminarMouseClicked
         JPanel contenedor = (JPanel) getParent();
-        contenedor.remove(campoOpcion.this);
-        contenedor.revalidate();
-        contenedor.repaint();
-        System.out.println(contenedor.getComponentCount());
-        System.gc(); // Sugerir al recolector de basura que se ejecute
+        if (contenedor.getComponentCount() != 1) {
+            contenedor.remove(campoOpcion.this);
+            contenedor.revalidate();
+            contenedor.repaint();
+            System.gc(); // Sugerir al recolector de basura que se ejecute
+        }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_lblEliminarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JSpinner apinnerPuntuacion;
+    private javax.swing.JPanel btnEliminar;
+    private javax.swing.JComboBox<String> comboRespuesta;
+    private javax.swing.JLabel lblEliminar;
+    private javax.swing.JTextField txtPregunta;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,8 +1,6 @@
 package domain;
 
 import componentes.campoPregunta;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.DefaultListModel;
 
 public class UICrearQuiz extends javax.swing.JFrame {
@@ -37,109 +35,115 @@ public class UICrearQuiz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        pnlBackground = new javax.swing.JPanel();
+        txtNombreQuiz = new javax.swing.JTextField();
+        lblRespuestas = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
+        btnGuardarQuiz = new javax.swing.JButton();
+        scrollContenedorPreguntas = new javax.swing.JScrollPane();
         pnlContenedorPreguntas = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnAniadirPregunta = new javax.swing.JButton();
+        scrollResultados = new javax.swing.JScrollPane();
+        listResultados = new javax.swing.JList<>();
+        lblNombreQuiz = new javax.swing.JLabel();
+        txtResultado = new javax.swing.JTextField();
+        btnAniadirResultados = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnlBackground.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBackground.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField1.setText("jTextField1");
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 300, 40));
+        txtNombreQuiz.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        txtNombreQuiz.setText("Nombre");
+        pnlBackground.add(txtNombreQuiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 300, 40));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Respuestas");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 280, 40));
+        lblRespuestas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        lblRespuestas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRespuestas.setText("Respuestas");
+        pnlBackground.add(lblRespuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 280, 40));
 
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        jLabel3.setText("Creación de Quiz.");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 370, 30));
+        lblTitulo.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        lblTitulo.setText("Creación de Quiz.");
+        pnlBackground.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 370, 30));
 
-        jButton1.setText("Guardar Quiz");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarQuiz.setText("Guardar Quiz");
+        btnGuardarQuiz.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardarQuiz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnGuardarQuizActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 450, 170, 30));
+        pnlBackground.add(btnGuardarQuiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 450, 170, 30));
 
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(370, 310));
+        scrollContenedorPreguntas.setBorder(null);
+        scrollContenedorPreguntas.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollContenedorPreguntas.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollContenedorPreguntas.setPreferredSize(new java.awt.Dimension(370, 310));
 
         pnlContenedorPreguntas.setBackground(new java.awt.Color(255, 255, 255));
         pnlContenedorPreguntas.setLayout(new javax.swing.BoxLayout(pnlContenedorPreguntas, javax.swing.BoxLayout.Y_AXIS));
-        jScrollPane2.setViewportView(pnlContenedorPreguntas);
+        scrollContenedorPreguntas.setViewportView(pnlContenedorPreguntas);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 470, -1));
+        pnlBackground.add(scrollContenedorPreguntas, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 470, -1));
 
-        jButton2.setText("Añadir pregunta");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAniadirPregunta.setText("Añadir pregunta");
+        btnAniadirPregunta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAniadirPregunta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAniadirPreguntaActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 450, 170, 30));
+        pnlBackground.add(btnAniadirPregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 450, 170, 30));
 
-        jList1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jList1.setModel(new DefaultListModel<>());
-        jScrollPane1.setViewportView(jList1);
+        listResultados.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        listResultados.setModel(new DefaultListModel<>());
+        scrollResultados.setViewportView(listResultados);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 280, 310));
+        pnlBackground.add(scrollResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 280, 310));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Nombre del Quiz");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 160, 40));
+        lblNombreQuiz.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        lblNombreQuiz.setText("Nombre del Quiz");
+        pnlBackground.add(lblNombreQuiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 160, 40));
 
-        jTextField2.setText("jTextField2");
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 450, 150, 30));
+        txtResultado.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        txtResultado.setText("Resultado");
+        pnlBackground.add(txtResultado, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 450, 150, 30));
 
-        jButton3.setText("Añadir respuesta");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnAniadirResultados.setText("Añadir resultado");
+        btnAniadirResultados.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAniadirResultados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnAniadirResultadosActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 450, 120, 30));
+        pnlBackground.add(btnAniadirResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 450, 120, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
+        getContentPane().add(pnlBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAniadirPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirPreguntaActionPerformed
         obj = new campoPregunta();
         pnlContenedorPreguntas.add(obj);
         pnlContenedorPreguntas.revalidate();
         pnlContenedorPreguntas.repaint();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnAniadirPreguntaActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String text = jTextField2.getText();
-        DefaultListModel<String> model = (DefaultListModel<String>) jList1.getModel();
+    private void btnAniadirResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirResultadosActionPerformed
+        String text = txtResultado.getText();
+        DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
         model.addElement(text);
-        jTextField2.setText("");
+        txtResultado.setText("");
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnAniadirResultadosActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnGuardarQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarQuizActionPerformed
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnGuardarQuizActionPerformed
 
     public static void main(String args[]) {
 
@@ -168,18 +172,18 @@ public class UICrearQuiz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton btnAniadirPregunta;
+    private javax.swing.JButton btnAniadirResultados;
+    private javax.swing.JButton btnGuardarQuiz;
+    private javax.swing.JLabel lblNombreQuiz;
+    private javax.swing.JLabel lblRespuestas;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JList<String> listResultados;
+    private javax.swing.JPanel pnlBackground;
     private javax.swing.JPanel pnlContenedorPreguntas;
+    private javax.swing.JScrollPane scrollContenedorPreguntas;
+    private javax.swing.JScrollPane scrollResultados;
+    private javax.swing.JTextField txtNombreQuiz;
+    private javax.swing.JTextField txtResultado;
     // End of variables declaration//GEN-END:variables
 }
