@@ -3,9 +3,9 @@ package main;
 import java.util.List;
 
 public class Quiz {
-    
-    private String nombre; 
-    private List<Pregunta> preguntas; 
+
+    private String nombre;
+    private List<Pregunta> preguntas;
     private List<String> resultados;
 
     public Quiz() {
@@ -13,7 +13,7 @@ public class Quiz {
         this.preguntas = null;
         this.resultados = null;
     }
-    
+
     public Quiz(String nombre, List<Pregunta> preguntas, List<String> resultados) {
         this.nombre = nombre;
         this.preguntas = preguntas;
@@ -42,6 +42,25 @@ public class Quiz {
 
     public void setResultados(List<String> resultados) {
         this.resultados = resultados;
+    }
+
+    public void imprimirDatos() {
+        System.out.println("Quiz = " + nombre + "\n");
+        
+        for (int i = 0; i < resultados.size(); i++) {
+            System.out.println("Respuesta " + i + ": " + resultados.get(i));
+        }
+        System.out.println("");
+        
+        for (int i = 0; i < preguntas.size(); i++) {
+            System.out.println("Pregunta " + i + ": " + preguntas.get(i).getEnunciado());
+            for (int k = 0; k < preguntas.get(i).getOpciones().size(); k++) {
+                System.out.print("   Opcion " + i + ": " + preguntas.get(i).getOpciones().get(k).getTexto());
+                System.out.print("  " + preguntas.get(i).getOpciones().get(k).getDimension());
+                System.out.print("  " + preguntas.get(i).getOpciones().get(k).getPuntaje() + "\n");
+            }
+            System.out.println("");
+        }
     }
 
     @Override
