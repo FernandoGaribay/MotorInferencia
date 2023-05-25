@@ -59,12 +59,11 @@ public class conexion {
         }
     }
 
-    public void guardarQuiz(String nombre, List<Pregunta> preguntas, List<String> resultados) {
-        this.nombre = nombre;
-        this.preguntas = preguntas;
-        this.resultados = resultados;
+    public void guardarQuiz(Quiz objQuiz) {       
+        this.nombre = objQuiz.getNombre();
+        this.preguntas = objQuiz.getPreguntas();
+        this.resultados = objQuiz.getResultados();
         this.resultadosIdMap = insertarResultados(resultados);
-        
         insertarQuiz();
         insertarPreguntas();
     }
@@ -187,7 +186,9 @@ public class conexion {
         resultados.add("Introvertido");
         resultados.add("Extrovertido");
 
-        conect.guardarQuiz("Personalidad", preguntas, resultados);
+        Quiz objQuiz = new Quiz("Test", preguntas, resultados);
+        
+        conect.guardarQuiz(objQuiz);
         conect.desconectar();
     }
 }
