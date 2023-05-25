@@ -1,33 +1,27 @@
 package domain;
 
 import componentes.campoPregunta;
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import main.Pregunta;
+import main.Quiz;
+import main.conexion;
 
 public class UICrearQuiz extends javax.swing.JFrame {
 
-    campoPregunta obj;
-
     public UICrearQuiz() {
         initComponents();
-        
+
         campoPregunta p1 = new campoPregunta();
         campoPregunta p2 = new campoPregunta();
         campoPregunta p3 = new campoPregunta();
-        campoPregunta p4 = new campoPregunta();
-        campoPregunta p5 = new campoPregunta();
-        campoPregunta p6 = new campoPregunta();
-        campoPregunta p7 = new campoPregunta();
-        campoPregunta p8 = new campoPregunta();
-        campoPregunta p9 = new campoPregunta();
+
         pnlContenedorPreguntas.add(p1);
         pnlContenedorPreguntas.add(p2);
         pnlContenedorPreguntas.add(p3);
-        pnlContenedorPreguntas.add(p4);
-        pnlContenedorPreguntas.add(p5);
-        pnlContenedorPreguntas.add(p6);
-        pnlContenedorPreguntas.add(p7);
-        pnlContenedorPreguntas.add(p8);
-        pnlContenedorPreguntas.add(p9);
 
     }
 
@@ -56,7 +50,6 @@ public class UICrearQuiz extends javax.swing.JFrame {
         pnlBackground.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtNombreQuiz.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        txtNombreQuiz.setText("Nombre");
         pnlBackground.add(txtNombreQuiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 300, 40));
 
         lblRespuestas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -127,7 +120,8 @@ public class UICrearQuiz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAniadirPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirPreguntaActionPerformed
-        obj = new campoPregunta();
+        campoPregunta obj = new campoPregunta();
+
         pnlContenedorPreguntas.add(obj);
         pnlContenedorPreguntas.revalidate();
         pnlContenedorPreguntas.repaint();
@@ -142,7 +136,41 @@ public class UICrearQuiz extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAniadirResultadosActionPerformed
 
     private void btnGuardarQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarQuizActionPerformed
+
+        conexion objConexion = new conexion();
+
+        String nombreQuiz;
+        List<Pregunta> preguntas = new ArrayList<>();
+        List<String> resultados = new ArrayList<>();
+
+        if (txtNombreQuiz.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo \"Nombre del Quiz\" no puede estar vacio.");
+            return;
+        }
+        if (listResultados.getModel().getSize() == 0) {
+            JOptionPane.showMessageDialog(this, "El campo \"Respuestas\" no puede estar vacio.");
+            return;
+        }
         
+        nombreQuiz = txtNombreQuiz.getText();
+        resultados.addAll(listResultados.getSelectedValuesList());
+        resultados.add("Item 1");
+        resultados.add("Item 2");
+        resultados.add("Item 3");
+        resultados.add("Item 4");
+
+        for (Component componente : pnlContenedorPreguntas.getComponents()) {
+            if (componente instanceof campoPregunta) {
+                campoPregunta campo = (campoPregunta) componente;
+                preguntas.add(campo.getPregunta());
+            }
+        }
+        Quiz objQuiz = new Quiz(nombreQuiz, preguntas, resultados);
+        objQuiz.imprimirDatos();
+        objConexion.conectar();
+        objConexion.guardarQuiz(objQuiz);
+        objConexion.desconectar();
+
     }//GEN-LAST:event_btnGuardarQuizActionPerformed
 
     public static void main(String args[]) {

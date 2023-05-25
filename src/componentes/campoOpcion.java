@@ -1,6 +1,7 @@
 package componentes;
 
 import javax.swing.JPanel;
+import main.OpcionRespuesta;
 
 public class campoOpcion extends javax.swing.JPanel {
 
@@ -14,7 +15,7 @@ public class campoOpcion extends javax.swing.JPanel {
 
         txtPregunta = new javax.swing.JTextField();
         comboRespuesta = new javax.swing.JComboBox<>();
-        apinnerPuntuacion = new javax.swing.JSpinner();
+        spinnerPuntuacion = new javax.swing.JSpinner();
         btnEliminar = new javax.swing.JPanel();
         lblEliminar = new javax.swing.JLabel();
 
@@ -28,7 +29,7 @@ public class campoOpcion extends javax.swing.JPanel {
 
         comboRespuesta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         add(comboRespuesta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 7, 90, -1));
-        add(apinnerPuntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 7, 50, -1));
+        add(spinnerPuntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 7, 50, -1));
 
         btnEliminar.setBackground(new java.awt.Color(204, 204, 204));
         btnEliminar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -60,12 +61,22 @@ public class campoOpcion extends javax.swing.JPanel {
 
     }//GEN-LAST:event_lblEliminarMouseClicked
 
+    
+    public OpcionRespuesta getOpcion(){
+        OpcionRespuesta objOpcion = new OpcionRespuesta();
+        
+        objOpcion.setTexto(txtPregunta.getText());
+        objOpcion.setDimension(comboRespuesta.getSelectedItem().toString());
+        objOpcion.setPuntaje((int)spinnerPuntuacion.getValue());
+        
+        return objOpcion;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner apinnerPuntuacion;
     private javax.swing.JPanel btnEliminar;
     private javax.swing.JComboBox<String> comboRespuesta;
     private javax.swing.JLabel lblEliminar;
+    private javax.swing.JSpinner spinnerPuntuacion;
     private javax.swing.JTextField txtPregunta;
     // End of variables declaration//GEN-END:variables
 }

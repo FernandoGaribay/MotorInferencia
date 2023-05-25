@@ -1,25 +1,36 @@
 package componentes;
 
+import java.awt.Component;
 import javax.swing.JPanel;
+import main.Pregunta;
 
 public class campoPregunta extends javax.swing.JPanel {
 
-    campoOpcion obj;
-
     public campoPregunta() {
         initComponents();
-
+        
         campoOpcion p1 = new campoOpcion();
         campoOpcion p2 = new campoOpcion();
         campoOpcion p3 = new campoOpcion();
-        campoOpcion p4 = new campoOpcion();
-        campoOpcion p5 = new campoOpcion();
 
         pnlContenedorOpciones.add(p1);
         pnlContenedorOpciones.add(p2);
         pnlContenedorOpciones.add(p3);
-//        pnlContenedorOpciones.add(p4);
-//        pnlContenedorOpciones.add(p5);
+
+    }
+
+    public Pregunta getPregunta() {
+        Pregunta objPregunta = new Pregunta();
+
+        objPregunta.setEnunciado(txtEnunciado.getText());
+        for (Component componente : pnlContenedorOpciones.getComponents()) {
+            if (componente instanceof campoOpcion) {
+                campoOpcion campo = (campoOpcion) componente;
+                objPregunta.agregarOpcionRespuesta(campo.getOpcion());
+            }
+        }
+
+        return objPregunta;
     }
 
     @SuppressWarnings("unchecked")
@@ -75,7 +86,7 @@ public class campoPregunta extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirActionPerformed
-        obj = new campoOpcion();
+        campoOpcion obj = new campoOpcion();
 
         pnlContenedorOpciones.add(obj);
         pnlContenedorOpciones.revalidate();
@@ -92,7 +103,7 @@ public class campoPregunta extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAniadir;
     private javax.swing.JButton btnEliminar;
