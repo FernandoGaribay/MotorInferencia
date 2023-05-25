@@ -5,6 +5,10 @@ public class OpcionRespuesta {
     private String texto;
     private int puntaje;
 
+    public OpcionRespuesta() {
+        this.texto = null;
+    }
+    
     public OpcionRespuesta(String texto) {
         this.texto = texto;
     }
@@ -30,5 +34,17 @@ public class OpcionRespuesta {
     
     public String getDimension() {
         return dimension;
+    }
+
+    public void setDimension(String dimension) {
+        this.dimension = dimension;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public void setPuntaje(int puntaje) {
+        this.puntaje = puntaje;
     }
 }
