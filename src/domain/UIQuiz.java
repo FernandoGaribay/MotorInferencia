@@ -2,22 +2,29 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JMenuItem;
 import main.MotorDeInferencia;
 import main.OpcionRespuesta;
 import main.Pregunta;
 import main.Respuesta;
+import main.conexion;
 
 public class UIQuiz extends javax.swing.JFrame {
 
     int index = -1;
+    
+    List<String> nombresQuizzes;
     List<Respuesta> respuestas = new ArrayList<>();
     List<Pregunta> preguntas = new ArrayList<>();
     MotorDeInferencia motor = new MotorDeInferencia();
+    
     Pregunta pregunta1;
     Pregunta pregunta2;
 
     public UIQuiz() {
         initComponents();
+        createMenuQuizes();
+        
         pregunta1 = new Pregunta("¿Disfrutas de estar rodeado de mucha gente?");
         pregunta1.agregarOpcionRespuesta(new OpcionRespuesta("Completamente de acuerdo", "Extroversión", 3));
         pregunta1.agregarOpcionRespuesta(new OpcionRespuesta("De acuerdo", "Extroversión", 2));
@@ -54,6 +61,9 @@ public class UIQuiz extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuQuizes = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -125,6 +135,14 @@ public class UIQuiz extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
 
+        menuQuizes.setText("Quizes");
+        jMenuBar1.add(menuQuizes);
+
+        jMenu3.setText("Reiniciar");
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -156,8 +174,21 @@ public class UIQuiz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void createMenuQuizes() {
+        conexion conexion = new conexion();
+        menuQuizes.removeAll();
+        
+        conexion.conectar();
+        List<String> nombresQuizzes = conexion.obtenerNombresQuizzes();
+        for (String nombreCampo : nombresQuizzes) {
+            JMenuItem menuItem = new JMenuItem(nombreCampo);
+            menuQuizes.add(menuItem);
+        }
+        conexion.desconectar();
+    }
 
     public void siguienteRespuesta() {
         if (index < preguntas.size() - 1) {
@@ -205,7 +236,10 @@ public class UIQuiz extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblPregunta;
+    private javax.swing.JMenu menuQuizes;
     // End of variables declaration//GEN-END:variables
 }

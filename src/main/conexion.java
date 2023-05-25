@@ -59,7 +59,7 @@ public class conexion {
         }
     }
 
-    public void guardarQuiz(Quiz objQuiz) {       
+    public void guardarQuiz(Quiz objQuiz) {
         this.nombre = objQuiz.getNombre();
         this.preguntas = objQuiz.getPreguntas();
         this.resultados = objQuiz.getResultados();
@@ -158,6 +158,29 @@ public class conexion {
         return resultadosIdMap;
     }
 
+    public List<String> obtenerNombresQuizzes() {
+        List<String> nombres = new ArrayList<>();
+
+        try {
+            Statement statement = connect.createStatement();
+            String sql = "SELECT nombre FROM quizzes";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                String nombre = resultSet.getString("nombre");
+                nombres.add(nombre);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener los nombres");
+            System.out.println(ex.getMessage());
+        }
+
+        return nombres;
+    }
+
     public static void main(String[] args) throws SQLException {
         conexion conect = new conexion();
         conect.conectar();
@@ -187,8 +210,12 @@ public class conexion {
         resultados.add("Extrovertido");
 
         Quiz objQuiz = new Quiz("Test", preguntas, resultados);
-        
-        conect.guardarQuiz(objQuiz);
+
+//        conect.guardarQuiz(objQuiz);
+        List<String> quizzes = conect.obtenerNombresQuizzes();
+        for (String quizze : quizzes) {
+            System.out.println(quizze);
+        }
         conect.desconectar();
     }
 }
