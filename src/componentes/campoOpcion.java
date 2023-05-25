@@ -1,5 +1,6 @@
 package componentes;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import main.OpcionRespuesta;
 
@@ -27,7 +28,7 @@ public class campoOpcion extends javax.swing.JPanel {
         txtPregunta.setText("Pregunta");
         add(txtPregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 7, 190, -1));
 
-        comboRespuesta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboRespuesta.setModel(new DefaultComboBoxModel<>());
         add(comboRespuesta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 7, 90, -1));
         add(spinnerPuntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 7, 50, -1));
 
@@ -61,15 +62,25 @@ public class campoOpcion extends javax.swing.JPanel {
 
     }//GEN-LAST:event_lblEliminarMouseClicked
 
-    
-    public OpcionRespuesta getOpcion(){
+    public OpcionRespuesta getOpcion() {
         OpcionRespuesta objOpcion = new OpcionRespuesta();
-        
+
         objOpcion.setTexto(txtPregunta.getText());
         objOpcion.setDimension(comboRespuesta.getSelectedItem().toString());
-        objOpcion.setPuntaje((int)spinnerPuntuacion.getValue());
-        
+        objOpcion.setPuntaje((int) spinnerPuntuacion.getValue());
+
         return objOpcion;
+    }
+
+    public void setComboBoxModel(DefaultComboBoxModel<String> comboBoxModel) {
+        DefaultComboBoxModel<String> newComboBoxModel = new DefaultComboBoxModel<>();
+
+        for (int i = 0; i < comboBoxModel.getSize(); i++) {
+            String item = comboBoxModel.getElementAt(i);
+            newComboBoxModel.addElement(item);
+        }
+
+        comboRespuesta.setModel(newComboBoxModel);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

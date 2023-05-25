@@ -4,6 +4,7 @@ import componentes.campoPregunta;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import main.Pregunta;
@@ -23,6 +24,18 @@ public class UICrearQuiz extends javax.swing.JFrame {
         pnlContenedorPreguntas.add(p2);
         pnlContenedorPreguntas.add(p3);
 
+    }
+
+    public DefaultComboBoxModel<String> obtenerComboBoxModel() {
+        DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
+        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
+
+        for (int i = 0; i < model.getSize(); i++) {
+            String resultado = model.getElementAt(i);
+            comboBoxModel.addElement(resultado);
+        }
+
+        return comboBoxModel;
     }
 
     @SuppressWarnings("unchecked")
@@ -121,18 +134,30 @@ public class UICrearQuiz extends javax.swing.JFrame {
 
     private void btnAniadirPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirPreguntaActionPerformed
         campoPregunta obj = new campoPregunta();
-
+        obj.setComboBoxModelOpcion(obtenerComboBoxModel());
+        
         pnlContenedorPreguntas.add(obj);
         pnlContenedorPreguntas.revalidate();
         pnlContenedorPreguntas.repaint();
     }//GEN-LAST:event_btnAniadirPreguntaActionPerformed
 
     private void btnAniadirResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirResultadosActionPerformed
-        String text = txtResultado.getText();
-        DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
-        model.addElement(text);
-        txtResultado.setText("");
+        if (!txtResultado.getText().isEmpty()) {
+            String text = txtResultado.getText();
+            DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
 
+            model.addElement(text);
+            txtResultado.setText("");
+
+            for (Component componente : pnlContenedorPreguntas.getComponents()) {
+                if (componente instanceof campoPregunta) {
+                    campoPregunta campo = (campoPregunta) componente;
+                    campo.setComboBoxModelOpcion(obtenerComboBoxModel());
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No puedes dejar el campo \"Añadir resultado\" vacio.");
+        }
     }//GEN-LAST:event_btnAniadirResultadosActionPerformed
 
     private void btnGuardarQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarQuizActionPerformed
@@ -140,6 +165,7 @@ public class UICrearQuiz extends javax.swing.JFrame {
         conexion objConexion = new conexion();
 
         String nombreQuiz;
+        DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
         List<Pregunta> preguntas = new ArrayList<>();
         List<String> resultados = new ArrayList<>();
 
@@ -151,13 +177,14 @@ public class UICrearQuiz extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "El campo \"Respuestas\" no puede estar vacio.");
             return;
         }
-        
+
         nombreQuiz = txtNombreQuiz.getText();
-        resultados.addAll(listResultados.getSelectedValuesList());
-        resultados.add("Item 1");
-        resultados.add("Item 2");
-        resultados.add("Item 3");
-        resultados.add("Item 4");
+
+        // Extraccion de datos del listado de resultados
+        for (int i = 0; i < model.getSize(); i++) {
+            String resultado = model.getElementAt(i);
+            resultados.add(resultado);
+        }
 
         for (Component componente : pnlContenedorPreguntas.getComponents()) {
             if (componente instanceof campoPregunta) {

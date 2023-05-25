@@ -1,6 +1,7 @@
 package componentes;
 
 import java.awt.Component;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import main.Pregunta;
 
@@ -8,7 +9,7 @@ public class campoPregunta extends javax.swing.JPanel {
 
     public campoPregunta() {
         initComponents();
-        
+
         campoOpcion p1 = new campoOpcion();
         campoOpcion p2 = new campoOpcion();
         campoOpcion p3 = new campoOpcion();
@@ -31,6 +32,15 @@ public class campoPregunta extends javax.swing.JPanel {
         }
 
         return objPregunta;
+    }
+
+    public void setComboBoxModelOpcion(DefaultComboBoxModel<String> comboBoxModel) {
+        for (Component componente : pnlContenedorOpciones.getComponents()) {
+            if (componente instanceof campoOpcion) {
+                campoOpcion campo = (campoOpcion) componente;
+                campo.setComboBoxModel(comboBoxModel);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
