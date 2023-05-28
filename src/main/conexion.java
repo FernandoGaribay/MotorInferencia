@@ -10,9 +10,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class conexion {
 
+//    String bd="motorinferencia";
+//    String url="jdbc:mysql://localhost:3308/";
+//
+//    String user="prueba";
+//    String password="";
     private String bd = "motorinferencia";
     private String url = "jdbc:mysql://localhost:3306/"; // CAMBIAR EL PUERTO SI ES NECESARIO
 
@@ -29,6 +36,14 @@ public class conexion {
     int idQuiz = -1;
 
     private PreparedStatement stInsertar;
+    private PreparedStatement stBorrar;
+    private PreparedStatement stModificar;
+    private PreparedStatement stObtenerId;
+    private PreparedStatement mostrarPregunta;
+    private PreparedStatement mostrarResultados;
+    private PreparedStatement mostrarRespuesta;
+
+
 
     public conexion() {
         try {
@@ -67,7 +82,69 @@ public class conexion {
         insertarQuiz();
         insertarPreguntas();
     }
+    
+    public void mostrarPregunta(int id) {
+        try {
+            String query = "SELECT enunciado FROM preguntas WHERE id = ?";
+            mostrarPregunta = connect.prepareStatement(query);
 
+            mostrarPregunta.setInt(1, id);
+
+            ResultSet resultSet = mostrarPregunta.executeQuery();
+            if (resultSet.next()) {
+                String enunciado = resultSet.getString("enunciado");
+                System.out.println("Enunciado: " + enunciado);
+            } else {
+                System.out.println("No se encontró la pregunta especificada.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void mostrarResultados(int id) {
+        try {
+            String query = "SELECT nombre FROM resultados WHERE id = ?";
+            mostrarResultados = connect.prepareStatement(query);
+
+            mostrarResultados.setInt(1, id);
+
+            ResultSet resultSet = mostrarResultados.executeQuery();
+            while (resultSet.next()) {
+                String Resultado = resultSet.getString("nombre");
+                System.out.println("Resultado: " + Resultado);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void mostrarRespuestas(int id) {
+        try {
+            String query = "SELECT texto FROM opciones WHERE idPregunta = ? AND puntos > 0";
+            mostrarRespuesta = connect.prepareStatement(query);
+
+
+            mostrarRespuesta.setInt(1, id);
+
+            ResultSet resultSet = mostrarRespuesta.executeQuery();
+            while (resultSet.next()) {
+                String respuesta = resultSet.getString("texto");
+                System.out.println("Respuesta: " + respuesta);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void borrarQuiz(){
+        
+    }
+    
+    public void borrarPreguntaRespuesta(){
+        
+    }
+    
     public void insertarQuiz() {
         String sql = "INSERT INTO quizzes (nombre) VALUES (?)";
 
@@ -211,11 +288,16 @@ public class conexion {
 
         Quiz objQuiz = new Quiz("Test", preguntas, resultados);
 
-//        conect.guardarQuiz(objQuiz);
+        //conect.guardarQuiz(objQuiz);
         List<String> quizzes = conect.obtenerNombresQuizzes();
         for (String quizze : quizzes) {
             System.out.println(quizze);
         }
+        
+        conect.mostrarPregunta(2);
+        conect.mostrarRespuestas(2);
+        conect.mostrarResultados(2);
+        
         conect.desconectar();
     }
 }
