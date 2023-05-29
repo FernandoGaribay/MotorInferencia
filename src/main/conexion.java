@@ -15,16 +15,16 @@ import java.util.logging.Logger;
 
 public class conexion {
 
-//    String bd="motorinferencia";
-//    String url="jdbc:mysql://localhost:3308/";
-//
-//    String user="prueba";
-//    String password="";
-    private String bd = "motorinferencia";
-    private String url = "jdbc:mysql://localhost:3306/"; // CAMBIAR EL PUERTO SI ES NECESARIO
+    String bd="motorinferencia";
+    String url="jdbc:mysql://localhost:3308/";
 
-    private String user = "root"; // CAMBIAR EL USUARIO SI ES NECESARIO
-    private String password = "";
+    String user="prueba";
+    String password="";
+//    private String bd = "motorinferencia";
+//    private String url = "jdbc:mysql://localhost:3306/"; // CAMBIAR EL PUERTO SI ES NECESARIO
+//
+//    private String user = "root"; // CAMBIAR EL USUARIO SI ES NECESARIO
+//    private String password = "";
     private String driver = "com.mysql.cj.jdbc.Driver";
     private Connection connect;
 
@@ -41,7 +41,11 @@ public class conexion {
     private PreparedStatement stBorrarResutltado;
     private PreparedStatement stBorrarQuiz;
     
-    private PreparedStatement stModificar;
+    private PreparedStatement stModificarQuiz;
+    private PreparedStatement stModificarPregunta;
+    private PreparedStatement stModificarOpciones;
+    private PreparedStatement stModificarResultados;
+
     private PreparedStatement stObtenerId;
     
     private PreparedStatement mostrarPregunta;
@@ -207,7 +211,82 @@ public void borrarResultados(int id){
         e.printStackTrace();
     } 
 }
-    
+
+public void modificarQuiz(int id, String nuevoNombre) {
+    try {
+        String query = "UPDATE quizzes SET nombre = ? WHERE id = ?";
+        stModificarQuiz = connect.prepareStatement(query);
+        stModificarQuiz.setString(1, nuevoNombre);
+        stModificarQuiz.setInt(2, id);
+
+        int rowsAffected = stModificarQuiz.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Quiz modificado exitosamente.");
+        } else {
+            System.out.println("No se encontró el quiz especificado.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+public void modificarPregunta(int id, String nuevoEnunciado) {
+    try {
+        String query = "UPDATE preguntas SET enunciado = ? WHERE id = ?";
+        stModificarPregunta = connect.prepareStatement(query);
+        stModificarPregunta.setString(1, nuevoEnunciado);
+        stModificarPregunta.setInt(2, id);
+
+        int rowsAffected = stModificarPregunta.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Pregunta modificada exitosamente.");
+        } else {
+            System.out.println("No se encontró la pregunta especificada.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+public void modificarOpcion(int id, String nuevoTexto) {
+    try  {
+        String query = "UPDATE opciones SET texto = ? WHERE id = ?";
+        stModificarOpciones = connect.prepareStatement(query);
+        stModificarOpciones.setString(1, nuevoTexto);
+        stModificarOpciones.setInt(2, id);
+
+        int rowsAffected = stModificarOpciones.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Opción modificada exitosamente.");
+        } else {
+            System.out.println("No se encontró la opción especificada.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
+public void modificarResultados(int id, String nuevaRespuesta){
+      try  {
+        String query = "UPDATE resultados SET nombre = ? WHERE id = ?";
+        stModificarResultados = connect.prepareStatement(query);
+        stModificarResultados.setString(1, nuevaRespuesta);
+        stModificarResultados.setInt(2, id);
+
+        int rowsAffected = stModificarResultados.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Opción modificada exitosamente.");
+        } else {
+            System.out.println("No se encontró la opción especificada.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+}
+
+
     public void insertarQuiz() {
         String sql = "INSERT INTO quizzes (nombre) VALUES (?)";
 
@@ -321,6 +400,7 @@ public void borrarResultados(int id){
         return nombres;
     }
 
+      
     public static void main(String[] args) throws SQLException {
         conexion conect = new conexion();
         conect.conectar();
@@ -361,10 +441,13 @@ public void borrarResultados(int id){
         conect.mostrarRespuestas(2);
         conect.mostrarResultados(2);
         
-//        conect.borrarPreguntaRespuesta(5);
-//        conect.borrarPreguntaRespuesta(6);
-//        conect.borrarQuiz(3);
-//        conect.borrarResultados(6);
+        //conect.modificarOpcion(47,"si");
+        //conect.modificarResultados(7, "si");
+        
+        //conect.borrarPreguntaRespuesta(5);
+        //conect.borrarPreguntaRespuesta(6);
+        //conect.borrarQuiz(3);
+        //conect.borrarResultados(6);
         conect.desconectar();
     }
 }
