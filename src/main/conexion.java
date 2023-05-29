@@ -36,12 +36,18 @@ public class conexion {
     int idQuiz = -1;
 
     private PreparedStatement stInsertar;
-    private PreparedStatement stBorrar;
+    private PreparedStatement stBorrarQA;
+    
+    private PreparedStatement stBorrarResutltado;
+    private PreparedStatement stBorrarQuiz;
+    
     private PreparedStatement stModificar;
     private PreparedStatement stObtenerId;
+    
     private PreparedStatement mostrarPregunta;
     private PreparedStatement mostrarResultados;
     private PreparedStatement mostrarRespuesta;
+
 
 
 
@@ -137,13 +143,70 @@ public class conexion {
         }
     }
 
-    public void borrarQuiz(){
-        
+public void borrarQuiz(int id) {
+    try  {
+        //borrarPreguntaRespuesta(id);
+        String deletePreguntasQuery = "DELETE FROM preguntas WHERE idQuiz = ?";
+        stBorrarQuiz = connect.prepareStatement(deletePreguntasQuery);
+        stBorrarQuiz.setInt(1, id);
+        stBorrarQuiz.executeUpdate();
+
+        String deleteQuizQuery = "DELETE FROM quizzes WHERE id = ?";
+        PreparedStatement deleteQuizStatement = connect.prepareStatement(deleteQuizQuery);
+        deleteQuizStatement.setInt(1, id);
+        int rowsAffected = deleteQuizStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Quiz borrado exitosamente.");
+        } else {
+            System.out.println("No se encontró el quiz especificado.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-    
-    public void borrarPreguntaRespuesta(){
-        
+}
+
+public void borrarPreguntaRespuesta(int id) {
+    try {
+        // Eliminar las opciones asociadas a la pregunta
+        String deleteOpcionesQuery = "DELETE FROM opciones WHERE idPregunta = ?";
+        stBorrarQA = connect.prepareStatement(deleteOpcionesQuery);
+        stBorrarQA.setInt(1, id);
+        stBorrarQA.executeUpdate();
+
+        // Eliminar la pregunta
+        String deletePreguntaQuery = "DELETE FROM preguntas WHERE id = ?";
+        PreparedStatement deletePreguntaStatement = connect.prepareStatement(deletePreguntaQuery);
+        deletePreguntaStatement.setInt(1, id);
+        int rowsAffected = deletePreguntaStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Pregunta y respuestas borradas exitosamente.");
+        } else {
+            System.out.println("No se encontró la pregunta especificada.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
+
+public void borrarResultados(int id){
+   try {
+        // Eliminar los resultados
+        String deleteOpcionesQuery = "DELETE FROM resultados WHERE id = ?";
+        stBorrarResutltado = connect.prepareStatement(deleteOpcionesQuery);
+        stBorrarResutltado.setInt(1, id);
+        stBorrarResutltado.executeUpdate();
+
+
+        int rowsAffected = stBorrarResutltado.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Se borro la respuesta indicada.");
+        } else {
+            System.out.println("No se encontró la respuesta especificada.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } 
+}
     
     public void insertarQuiz() {
         String sql = "INSERT INTO quizzes (nombre) VALUES (?)";
@@ -298,6 +361,10 @@ public class conexion {
         conect.mostrarRespuestas(2);
         conect.mostrarResultados(2);
         
+//        conect.borrarPreguntaRespuesta(5);
+//        conect.borrarPreguntaRespuesta(6);
+//        conect.borrarQuiz(3);
+//        conect.borrarResultados(6);
         conect.desconectar();
     }
 }
