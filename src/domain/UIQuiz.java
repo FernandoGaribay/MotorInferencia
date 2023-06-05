@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JMenuItem;
 import main.MotorDeInferencia;
 import main.OpcionRespuesta;
@@ -174,7 +175,10 @@ public class UIQuiz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        conexion objConexion = new conexion();
+        
+      
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void createMenuQuizes() {
@@ -182,8 +186,8 @@ public class UIQuiz extends javax.swing.JFrame {
         menuQuizes.removeAll();
         
         conexion.conectar();
-        List<String> nombresQuizzes = conexion.obtenerNombresQuizzes();
-        for (String nombreCampo : nombresQuizzes) {
+        Map<String, Integer> nombresQuizzes = conexion.obtenerQuizzes();
+        for (String nombreCampo : nombresQuizzes.keySet()) {
             JMenuItem menuItem = new JMenuItem(nombreCampo);
             menuQuizes.add(menuItem);
         }

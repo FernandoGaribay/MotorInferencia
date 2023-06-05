@@ -15,45 +15,38 @@ import java.util.logging.Logger;
 
 public class conexion {
 
-    String bd="motorinferencia";
-    String url="jdbc:mysql://localhost:3308/";
+    private String bd = "motorinferencia";
+    private String url = "jdbc:mysql://localhost:3306/";
 
-    String user="prueba";
-    String password="";
-//    private String bd = "motorinferencia";
-//    private String url = "jdbc:mysql://localhost:3306/"; // CAMBIAR EL PUERTO SI ES NECESARIO
-//
-//    private String user = "root"; // CAMBIAR EL USUARIO SI ES NECESARIO
-//    private String password = "";
+    private String user = "root";
+    private String password = "";
+
     private String driver = "com.mysql.cj.jdbc.Driver";
     private Connection connect;
 
     private String nombre;
     private List<Pregunta> preguntas;
     private List<String> resultados;
-    Map<String, Integer> resultadosIdMap;
+    private Map<String, Integer> resultadosIdMap;
 
     int idQuiz = -1;
 
     private PreparedStatement stInsertar;
     private PreparedStatement stBorrarQA;
-    
+
     private PreparedStatement stBorrarResutltado;
     private PreparedStatement stBorrarQuiz;
-    
+
     private PreparedStatement stModificarQuiz;
     private PreparedStatement stModificarPregunta;
     private PreparedStatement stModificarOpciones;
     private PreparedStatement stModificarResultados;
 
     private PreparedStatement stObtenerId;
-    
+
     private PreparedStatement mostrarPregunta;
     private PreparedStatement mostrarResultados;
     private PreparedStatement mostrarRespuesta;
-
-
-
 
     public conexion() {
         try {
@@ -84,26 +77,148 @@ public class conexion {
         }
     }
 
-    public void guardarQuiz(Quiz objQuiz) {
-        this.nombre = objQuiz.getNombre();
-        this.preguntas = objQuiz.getPreguntas();
-        this.resultados = objQuiz.getResultados();
-        this.resultadosIdMap = insertarResultados(resultados);
-        insertarQuiz();
-        insertarPreguntas();
+    public Quiz obtenerQuiz(int id) {
+        Quiz objQuiz = new Quiz();
+
+        objQuiz.setResultados(obtenerResultados());
+        objQuiz.setNombre(obtenerNombreQuiz(id));
+        objQuiz.setPreguntas(obtenerPreguntas(id));
+
+        return objQuiz;
     }
-    
-    public void mostrarPregunta(int id) {
+
+    public String obtenerNombreQuiz(int id) {
+               String nombre="";
         try {
-            String query = "SELECT enunciado FROM preguntas WHERE id = ?";
+            String query = "SELECT * FROM quizzes WHERE id = ?";
             mostrarPregunta = connect.prepareStatement(query);
-
             mostrarPregunta.setInt(1, id);
-
             ResultSet resultSet = mostrarPregunta.executeQuery();
+
             if (resultSet.next()) {
+                nombre = resultSet.getString("nombre");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nombre;
+    }
+
+    public List<Pregunta> obtenerPreguntas(int id) {
+        List<Pregunta> preguntas = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM preguntas WHERE idQuiz = ?";
+            mostrarPregunta = connect.prepareStatement(query);
+            mostrarPregunta.setInt(1, id);
+            ResultSet resultSet = mostrarPregunta.executeQuery();
+
+            while (resultSet.next()) {
+                int idPregunta = resultSet.getInt("id");
                 String enunciado = resultSet.getString("enunciado");
-                System.out.println("Enunciado: " + enunciado);
+                List<OpcionRespuesta> listOpciones = obtenerOpciones(idPregunta);
+//                System.out.println("Enunciado: " + enunciado);
+
+                preguntas.add(new Pregunta(enunciado, obtenerOpciones(idPregunta)));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return preguntas;
+    }
+
+    public List<OpcionRespuesta> obtenerOpciones(int idPregunta) {
+        List<OpcionRespuesta> opciones = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM opciones WHERE idPregunta = ?";
+            mostrarRespuesta = connect.prepareStatement(query);
+            mostrarRespuesta.setInt(1, idPregunta);
+            ResultSet resultSet = mostrarRespuesta.executeQuery();
+
+            while (resultSet.next()) {
+                int idResultado = resultSet.getInt("idResultado");
+                String texto = resultSet.getString("texto");
+                String dimension = "";
+
+//                String dimension = resultadosIdMap.get(idResultado);
+                for (Map.Entry<String, Integer> entry : resultadosIdMap.entrySet()) {
+                    if (entry.getValue().equals(idResultado)) {
+                        dimension = entry.getKey();
+                        break; // Se encontró la clave, se puede salir del bucle
+                    }
+                }
+
+                int puntaje = resultSet.getInt("puntos");
+//                System.out.println("Respuesta: " + texto);
+
+                opciones.add(new OpcionRespuesta(texto, dimension, puntaje));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return opciones;
+    }
+
+    public List<String> obtenerResultados() {
+        List<String> objRespuestas = new ArrayList<>();
+        resultadosIdMap = new HashMap<String, Integer>();
+        try {
+            String query = "SELECT * FROM resultados";
+            mostrarResultados = connect.prepareStatement(query);
+            ResultSet resultSet = mostrarResultados.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String resultado = resultSet.getString("nombre");
+//                System.out.println("Resultado: " + resultado);
+
+                objRespuestas.add(resultado);
+                resultadosIdMap.put(resultado, id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return objRespuestas;
+    }
+
+    public void borrarQuiz(int id) {
+        try {
+            //borrarPreguntaRespuesta(id);
+            String deletePreguntasQuery = "DELETE FROM preguntas WHERE idQuiz = ?";
+            stBorrarQuiz = connect.prepareStatement(deletePreguntasQuery);
+            stBorrarQuiz.setInt(1, id);
+            stBorrarQuiz.executeUpdate();
+
+            String deleteQuizQuery = "DELETE FROM quizzes WHERE id = ?";
+            PreparedStatement deleteQuizStatement = connect.prepareStatement(deleteQuizQuery);
+            deleteQuizStatement.setInt(1, id);
+            int rowsAffected = deleteQuizStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Quiz borrado exitosamente.");
+            } else {
+                System.out.println("No se encontró el quiz especificado.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void borrarPreguntaRespuesta(int id) {
+        try {
+            // Eliminar las opciones asociadas a la pregunta
+            String deleteOpcionesQuery = "DELETE FROM opciones WHERE idPregunta = ?";
+            stBorrarQA = connect.prepareStatement(deleteOpcionesQuery);
+            stBorrarQA.setInt(1, id);
+            stBorrarQA.executeUpdate();
+
+            // Eliminar la pregunta
+            String deletePreguntaQuery = "DELETE FROM preguntas WHERE id = ?";
+            PreparedStatement deletePreguntaStatement = connect.prepareStatement(deletePreguntaQuery);
+            deletePreguntaStatement.setInt(1, id);
+            int rowsAffected = deletePreguntaStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Pregunta y respuestas borradas exitosamente.");
             } else {
                 System.out.println("No se encontró la pregunta especificada.");
             }
@@ -112,180 +227,108 @@ public class conexion {
         }
     }
 
-    public void mostrarResultados(int id) {
+    public void borrarResultados(int id) {
         try {
-            String query = "SELECT nombre FROM resultados WHERE id = ?";
-            mostrarResultados = connect.prepareStatement(query);
+            // Eliminar los resultados
+            String deleteOpcionesQuery = "DELETE FROM resultados WHERE id = ?";
+            stBorrarResutltado = connect.prepareStatement(deleteOpcionesQuery);
+            stBorrarResutltado.setInt(1, id);
+            stBorrarResutltado.executeUpdate();
 
-            mostrarResultados.setInt(1, id);
-
-            ResultSet resultSet = mostrarResultados.executeQuery();
-            while (resultSet.next()) {
-                String Resultado = resultSet.getString("nombre");
-                System.out.println("Resultado: " + Resultado);
+            int rowsAffected = stBorrarResutltado.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Se borro la respuesta indicada.");
+            } else {
+                System.out.println("No se encontró la respuesta especificada.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void mostrarRespuestas(int id) {
+    public void modificarQuiz(int id, String nuevoNombre) {
         try {
-            String query = "SELECT texto FROM opciones WHERE idPregunta = ? AND puntos > 0";
-            mostrarRespuesta = connect.prepareStatement(query);
+            String query = "UPDATE quizzes SET nombre = ? WHERE id = ?";
+            stModificarQuiz = connect.prepareStatement(query);
+            stModificarQuiz.setString(1, nuevoNombre);
+            stModificarQuiz.setInt(2, id);
 
-
-            mostrarRespuesta.setInt(1, id);
-
-            ResultSet resultSet = mostrarRespuesta.executeQuery();
-            while (resultSet.next()) {
-                String respuesta = resultSet.getString("texto");
-                System.out.println("Respuesta: " + respuesta);
+            int rowsAffected = stModificarQuiz.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Quiz modificado exitosamente.");
+            } else {
+                System.out.println("No se encontró el quiz especificado.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-public void borrarQuiz(int id) {
-    try  {
-        //borrarPreguntaRespuesta(id);
-        String deletePreguntasQuery = "DELETE FROM preguntas WHERE idQuiz = ?";
-        stBorrarQuiz = connect.prepareStatement(deletePreguntasQuery);
-        stBorrarQuiz.setInt(1, id);
-        stBorrarQuiz.executeUpdate();
+    public void modificarPregunta(int id, String nuevoEnunciado) {
+        try {
+            String query = "UPDATE preguntas SET enunciado = ? WHERE id = ?";
+            stModificarPregunta = connect.prepareStatement(query);
+            stModificarPregunta.setString(1, nuevoEnunciado);
+            stModificarPregunta.setInt(2, id);
 
-        String deleteQuizQuery = "DELETE FROM quizzes WHERE id = ?";
-        PreparedStatement deleteQuizStatement = connect.prepareStatement(deleteQuizQuery);
-        deleteQuizStatement.setInt(1, id);
-        int rowsAffected = deleteQuizStatement.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println("Quiz borrado exitosamente.");
-        } else {
-            System.out.println("No se encontró el quiz especificado.");
+            int rowsAffected = stModificarPregunta.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Pregunta modificada exitosamente.");
+            } else {
+                System.out.println("No se encontró la pregunta especificada.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public void borrarPreguntaRespuesta(int id) {
-    try {
-        // Eliminar las opciones asociadas a la pregunta
-        String deleteOpcionesQuery = "DELETE FROM opciones WHERE idPregunta = ?";
-        stBorrarQA = connect.prepareStatement(deleteOpcionesQuery);
-        stBorrarQA.setInt(1, id);
-        stBorrarQA.executeUpdate();
-
-        // Eliminar la pregunta
-        String deletePreguntaQuery = "DELETE FROM preguntas WHERE id = ?";
-        PreparedStatement deletePreguntaStatement = connect.prepareStatement(deletePreguntaQuery);
-        deletePreguntaStatement.setInt(1, id);
-        int rowsAffected = deletePreguntaStatement.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println("Pregunta y respuestas borradas exitosamente.");
-        } else {
-            System.out.println("No se encontró la pregunta especificada.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public void borrarResultados(int id){
-   try {
-        // Eliminar los resultados
-        String deleteOpcionesQuery = "DELETE FROM resultados WHERE id = ?";
-        stBorrarResutltado = connect.prepareStatement(deleteOpcionesQuery);
-        stBorrarResutltado.setInt(1, id);
-        stBorrarResutltado.executeUpdate();
-
-
-        int rowsAffected = stBorrarResutltado.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println("Se borro la respuesta indicada.");
-        } else {
-            System.out.println("No se encontró la respuesta especificada.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } 
-}
-
-public void modificarQuiz(int id, String nuevoNombre) {
-    try {
-        String query = "UPDATE quizzes SET nombre = ? WHERE id = ?";
-        stModificarQuiz = connect.prepareStatement(query);
-        stModificarQuiz.setString(1, nuevoNombre);
-        stModificarQuiz.setInt(2, id);
-
-        int rowsAffected = stModificarQuiz.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println("Quiz modificado exitosamente.");
-        } else {
-            System.out.println("No se encontró el quiz especificado.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public void modificarPregunta(int id, String nuevoEnunciado) {
-    try {
-        String query = "UPDATE preguntas SET enunciado = ? WHERE id = ?";
-        stModificarPregunta = connect.prepareStatement(query);
-        stModificarPregunta.setString(1, nuevoEnunciado);
-        stModificarPregunta.setInt(2, id);
-
-        int rowsAffected = stModificarPregunta.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println("Pregunta modificada exitosamente.");
-        } else {
-            System.out.println("No se encontró la pregunta especificada.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public void modificarOpcion(int id, String nuevoTexto) {
-    try  {
-        String query = "UPDATE opciones SET texto = ? WHERE id = ?";
-        stModificarOpciones = connect.prepareStatement(query);
-        stModificarOpciones.setString(1, nuevoTexto);
-        stModificarOpciones.setInt(2, id);
-
-        int rowsAffected = stModificarOpciones.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println("Opción modificada exitosamente.");
-        } else {
-            System.out.println("No se encontró la opción especificada.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-
-public void modificarResultados(int id, String nuevaRespuesta){
-      try  {
-        String query = "UPDATE resultados SET nombre = ? WHERE id = ?";
-        stModificarResultados = connect.prepareStatement(query);
-        stModificarResultados.setString(1, nuevaRespuesta);
-        stModificarResultados.setInt(2, id);
-
-        int rowsAffected = stModificarResultados.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println("Opción modificada exitosamente.");
-        } else {
-            System.out.println("No se encontró la opción especificada.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
 
-}
+    public void modificarOpcion(int id, String nuevoTexto) {
+        try {
+            String query = "UPDATE opciones SET texto = ? WHERE id = ?";
+            stModificarOpciones = connect.prepareStatement(query);
+            stModificarOpciones.setString(1, nuevoTexto);
+            stModificarOpciones.setInt(2, id);
 
+            int rowsAffected = stModificarOpciones.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Opción modificada exitosamente.");
+            } else {
+                System.out.println("No se encontró la opción especificada.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void modificarResultados(int id, String nuevaRespuesta) {
+        try {
+            String query = "UPDATE resultados SET nombre = ? WHERE id = ?";
+            stModificarResultados = connect.prepareStatement(query);
+            stModificarResultados.setString(1, nuevaRespuesta);
+            stModificarResultados.setInt(2, id);
+
+            int rowsAffected = stModificarResultados.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Opción modificada exitosamente.");
+            } else {
+                System.out.println("No se encontró la opción especificada.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void guardarQuiz(Quiz objQuiz) {
+        this.nombre = objQuiz.getNombre();
+        this.preguntas = objQuiz.getPreguntas();
+        this.resultados = objQuiz.getResultados();
+        this.resultadosIdMap = insertarResultados(resultados);
+        insertarQuiz();
+        insertarPreguntas();
+
+        System.out.println("El quiz fue guardado correctamente.");
+    }
 
     public void insertarQuiz() {
         String sql = "INSERT INTO quizzes (nombre) VALUES (?)";
@@ -298,7 +341,7 @@ public void modificarResultados(int id, String nuevaRespuesta){
             ResultSet rs = stInsertar.getGeneratedKeys();
             if (rs.next()) {
                 idQuiz = rs.getInt(1);
-                System.out.println("Quiz insertado correctamente.");
+//                System.out.println("Quiz insertado correctamente.");
             }
         } catch (SQLException ex) {
             System.out.println("El Quiz no pudo ser insertado");
@@ -320,7 +363,7 @@ public void modificarResultados(int id, String nuevaRespuesta){
                 ResultSet rs = stInsertar.getGeneratedKeys();
                 if (rs.next()) {
                     idPregunta = rs.getInt(1);
-                    System.out.println("Pregunta insertada correctamente.");
+//                    System.out.println("Pregunta insertada correctamente.");
                 }
                 insertarOpcion(preguntas.get(i).getOpciones(), idPregunta);
             }
@@ -337,7 +380,7 @@ public void modificarResultados(int id, String nuevaRespuesta){
         try {
             for (OpcionRespuesta opcion : opciones) {
                 String resultado = opcion.getDimension();
-                int idResultado = resultadosIdMap.get(resultado);
+                int idResultado = resultadosIdMap.get(resultado); // se obtiene el valor a partir de una key
 
                 stInsertar = connect.prepareStatement(sql);
                 stInsertar.setString(1, opcion.getTexto());
@@ -365,7 +408,7 @@ public void modificarResultados(int id, String nuevaRespuesta){
                 ResultSet rs = stInsertar.getGeneratedKeys();
                 if (rs.next()) {
                     resultadosIdMap.put(resultado, rs.getInt(1));
-                    System.out.println("Resultado insertado correctamente.");
+//                    System.out.println("Resultado insertado correctamente.");
                 }
             }
 
@@ -377,17 +420,18 @@ public void modificarResultados(int id, String nuevaRespuesta){
         return resultadosIdMap;
     }
 
-    public List<String> obtenerNombresQuizzes() {
-        List<String> nombres = new ArrayList<>();
+    public Map<String, Integer> obtenerQuizzes() {
+        Map<String, Integer> nombres = new HashMap<>();
 
         try {
             Statement statement = connect.createStatement();
-            String sql = "SELECT nombre FROM quizzes";
+            String sql = "SELECT * FROM quizzes";
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String nombre = resultSet.getString("nombre");
-                nombres.add(nombre);
+                nombres.put(nombre, id);
             }
 
             resultSet.close();
@@ -400,11 +444,30 @@ public void modificarResultados(int id, String nuevaRespuesta){
         return nombres;
     }
 
-      
     public static void main(String[] args) throws SQLException {
         conexion conect = new conexion();
         conect.conectar();
+        Quiz objQuiz = conect.obtenerQuiz(1);
+        objQuiz.imprimirDatos();
 
+//        conect.guardarQuiz(testQuiz());
+//        Map<String, Integer> quizzes = conect.obtenerQuizzes();
+//        for (String quizze : quizzes.keySet()) {
+//            System.out.println(quizze);
+//        }
+//        conect.mostrarPregunta(2);
+//        conect.mostrarRespuestas(2);
+//        conect.mostrarResultados(2);
+        //conect.modificarOpcion(47,"si");
+        //conect.modificarResultados(7, "si");
+        //conect.borrarPreguntaRespuesta(5);
+        //conect.borrarPreguntaRespuesta(6);
+        //conect.borrarQuiz(3);
+        //conect.borrarResultados(6);
+        conect.desconectar();
+    }
+
+    public static Quiz testQuiz() {
         List<Pregunta> preguntas = new ArrayList<>();
         Pregunta pregunta1 = new Pregunta("¿Disfrutas de estar rodeado de mucha gente?");
         pregunta1.agregarOpcionRespuesta(new OpcionRespuesta("Completamente de acuerdo", "Extrovertido", 3));
@@ -431,23 +494,7 @@ public void modificarResultados(int id, String nuevaRespuesta){
 
         Quiz objQuiz = new Quiz("Test", preguntas, resultados);
 
-        //conect.guardarQuiz(objQuiz);
-        List<String> quizzes = conect.obtenerNombresQuizzes();
-        for (String quizze : quizzes) {
-            System.out.println(quizze);
-        }
-        
-        conect.mostrarPregunta(2);
-        conect.mostrarRespuestas(2);
-        conect.mostrarResultados(2);
-        
-        //conect.modificarOpcion(47,"si");
-        //conect.modificarResultados(7, "si");
-        
-        //conect.borrarPreguntaRespuesta(5);
-        //conect.borrarPreguntaRespuesta(6);
-        //conect.borrarQuiz(3);
-        //conect.borrarResultados(6);
-        conect.desconectar();
+        return objQuiz;
     }
+
 }

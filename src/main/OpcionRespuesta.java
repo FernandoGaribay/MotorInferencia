@@ -1,8 +1,9 @@
 package main;
 
 public class OpcionRespuesta {
-    private String dimension;
+    
     private String texto;
+    private String dimension;
     private int puntaje;
 
     public OpcionRespuesta() {

@@ -17,6 +17,11 @@ public class Pregunta {
         this.enunciado = enunciado;
         this.opciones = new ArrayList<>();
     }
+    
+    public Pregunta(String enunciado, List<OpcionRespuesta> opcionesRespuesta) {
+        this.enunciado = enunciado;
+        this.opciones = opcionesRespuesta;
+    }
 
     public void agregarOpcionRespuesta(OpcionRespuesta opcion) {
         opciones.add(opcion);
