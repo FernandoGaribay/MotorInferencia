@@ -14,7 +14,6 @@ public class UIQuiz extends javax.swing.JFrame {
 
     int index = -1;
     
-    List<String> nombresQuizzes;
     List<Respuesta> respuestas = new ArrayList<>();
     List<Pregunta> preguntas = new ArrayList<>();
     MotorDeInferencia motor = new MotorDeInferencia();
@@ -175,10 +174,8 @@ public class UIQuiz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        conexion objConexion = new conexion();
-        
-      
-        
+        new UICrearQuiz().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void createMenuQuizes() {

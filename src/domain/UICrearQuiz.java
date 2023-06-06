@@ -18,12 +18,19 @@ public class UICrearQuiz extends javax.swing.JFrame {
 
         campoPregunta p1 = new campoPregunta();
         campoPregunta p2 = new campoPregunta();
+
+        pnlContenedorPreguntas.add(p1);
+        pnlContenedorPreguntas.add(p2);
+    }
+
+    private void inicializar() {
+        campoPregunta p1 = new campoPregunta();
+        campoPregunta p2 = new campoPregunta();
         campoPregunta p3 = new campoPregunta();
 
         pnlContenedorPreguntas.add(p1);
         pnlContenedorPreguntas.add(p2);
         pnlContenedorPreguntas.add(p3);
-
     }
 
     public DefaultComboBoxModel<String> obtenerComboBoxModel() {
@@ -55,6 +62,7 @@ public class UICrearQuiz extends javax.swing.JFrame {
         lblNombreQuiz = new javax.swing.JLabel();
         txtResultado = new javax.swing.JTextField();
         btnAniadirResultados = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -72,7 +80,7 @@ public class UICrearQuiz extends javax.swing.JFrame {
 
         lblTitulo.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         lblTitulo.setText("Creación de Quiz.");
-        pnlBackground.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 370, 30));
+        pnlBackground.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 690, 30));
 
         btnGuardarQuiz.setText("Guardar Quiz");
         btnGuardarQuiz.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -126,6 +134,15 @@ public class UICrearQuiz extends javax.swing.JFrame {
         });
         pnlBackground.add(btnAniadirResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 450, 120, 30));
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/home.png"))); // NOI18N
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        pnlBackground.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 15, 40, 40));
+
         getContentPane().add(pnlBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
 
         pack();
@@ -135,7 +152,7 @@ public class UICrearQuiz extends javax.swing.JFrame {
     private void btnAniadirPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirPreguntaActionPerformed
         campoPregunta obj = new campoPregunta();
         obj.setComboBoxModelOpcion(obtenerComboBoxModel());
-        
+
         pnlContenedorPreguntas.add(obj);
         pnlContenedorPreguntas.revalidate();
         pnlContenedorPreguntas.repaint();
@@ -200,6 +217,11 @@ public class UICrearQuiz extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnGuardarQuizActionPerformed
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        new UIQuiz().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     public static void main(String args[]) {
 
         try {
@@ -230,6 +252,7 @@ public class UICrearQuiz extends javax.swing.JFrame {
     private javax.swing.JButton btnAniadirPregunta;
     private javax.swing.JButton btnAniadirResultados;
     private javax.swing.JButton btnGuardarQuiz;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblNombreQuiz;
     private javax.swing.JLabel lblRespuestas;
     private javax.swing.JLabel lblTitulo;

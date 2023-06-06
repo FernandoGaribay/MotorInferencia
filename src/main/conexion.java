@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class conexion {
 
@@ -42,7 +40,6 @@ public class conexion {
     private PreparedStatement stModificarOpciones;
     private PreparedStatement stModificarResultados;
 
-    private PreparedStatement stObtenerId;
 
     private PreparedStatement mostrarPregunta;
     private PreparedStatement mostrarResultados;
@@ -78,17 +75,20 @@ public class conexion {
     }
 
     public Quiz obtenerQuiz(int id) {
+
         Quiz objQuiz = new Quiz();
 
+        this.conectar();
         objQuiz.setResultados(obtenerResultados());
         objQuiz.setNombre(obtenerNombreQuiz(id));
         objQuiz.setPreguntas(obtenerPreguntas(id));
-
+        this.desconectar();
+        
         return objQuiz;
     }
 
-    public String obtenerNombreQuiz(int id) {
-               String nombre="";
+    private String obtenerNombreQuiz(int id) {
+        String nombre = "";
         try {
             String query = "SELECT * FROM quizzes WHERE id = ?";
             mostrarPregunta = connect.prepareStatement(query);
@@ -105,7 +105,7 @@ public class conexion {
         return nombre;
     }
 
-    public List<Pregunta> obtenerPreguntas(int id) {
+    private List<Pregunta> obtenerPreguntas(int id) {
         List<Pregunta> preguntas = new ArrayList<>();
         try {
             String query = "SELECT * FROM preguntas WHERE idQuiz = ?";
@@ -128,7 +128,7 @@ public class conexion {
         return preguntas;
     }
 
-    public List<OpcionRespuesta> obtenerOpciones(int idPregunta) {
+    private List<OpcionRespuesta> obtenerOpciones(int idPregunta) {
         List<OpcionRespuesta> opciones = new ArrayList<>();
         try {
             String query = "SELECT * FROM opciones WHERE idPregunta = ?";
@@ -160,7 +160,7 @@ public class conexion {
         return opciones;
     }
 
-    public List<String> obtenerResultados() {
+    private List<String> obtenerResultados() {
         List<String> objRespuestas = new ArrayList<>();
         resultadosIdMap = new HashMap<String, Integer>();
         try {
@@ -320,13 +320,16 @@ public class conexion {
     }
 
     public void guardarQuiz(Quiz objQuiz) {
-        this.nombre = objQuiz.getNombre();
-        this.preguntas = objQuiz.getPreguntas();
-        this.resultados = objQuiz.getResultados();
-        this.resultadosIdMap = insertarResultados(resultados);
+        
+        this.conectar();
+        nombre = objQuiz.getNombre();
+        preguntas = objQuiz.getPreguntas();
+        resultados = objQuiz.getResultados();
+        resultadosIdMap = insertarResultados(resultados);
         insertarQuiz();
         insertarPreguntas();
-
+        this.desconectar();
+        
         System.out.println("El quiz fue guardado correctamente.");
     }
 
@@ -446,7 +449,7 @@ public class conexion {
 
     public static void main(String[] args) throws SQLException {
         conexion conect = new conexion();
-        conect.conectar();
+
         Quiz objQuiz = conect.obtenerQuiz(1);
         objQuiz.imprimirDatos();
 
@@ -464,7 +467,7 @@ public class conexion {
         //conect.borrarPreguntaRespuesta(6);
         //conect.borrarQuiz(3);
         //conect.borrarResultados(6);
-        conect.desconectar();
+
     }
 
     public static Quiz testQuiz() {
