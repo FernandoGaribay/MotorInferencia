@@ -25,7 +25,7 @@ public class campoOpcion extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(412, 35));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txtPregunta.setText("Pregunta");
+        txtPregunta.setText("Opcion");
         add(txtPregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 7, 190, -1));
 
         comboRespuesta.setModel(new DefaultComboBoxModel<>());

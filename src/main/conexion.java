@@ -142,10 +142,10 @@ public class conexion {
                 String dimension = "";
 
 //                String dimension = resultadosIdMap.get(idResultado);
-                for (Map.Entry<String, Integer> entry : resultadosIdMap.entrySet()) {
-                    if (entry.getValue().equals(idResultado)) {
-                        dimension = entry.getKey();
-                        break; // Se encontró la clave, se puede salir del bucle
+                for (Map.Entry<String, Integer> tempDimension : resultadosIdMap.entrySet()) {
+                    if (tempDimension.getValue().equals(idResultado)) {
+                        dimension = tempDimension.getKey();
+                        break;
                     }
                 }
 
@@ -452,6 +452,7 @@ public class conexion {
 
         Quiz objQuiz = conect.obtenerQuiz(1);
         objQuiz.imprimirDatos();
+        System.out.println(objQuiz.getPreguntas().size());
 
 //        conect.guardarQuiz(testQuiz());
 //        Map<String, Integer> quizzes = conect.obtenerQuizzes();

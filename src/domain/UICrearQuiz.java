@@ -122,7 +122,6 @@ public class UICrearQuiz extends javax.swing.JFrame {
         pnlBackground.add(lblNombreQuiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 160, 40));
 
         txtResultado.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        txtResultado.setText("Resultado");
         pnlBackground.add(txtResultado, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 450, 150, 30));
 
         btnAniadirResultados.setText("Añadir resultado");
