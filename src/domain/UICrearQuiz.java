@@ -209,6 +209,7 @@ public class UICrearQuiz extends javax.swing.JFrame {
             }
         }
         Quiz objQuiz = new Quiz(nombreQuiz, preguntas, resultados);
+        //objQuiz.setNombre(nombreQuiz);
         objQuiz.imprimirDatos();
         objConexion.conectar();
         objConexion.guardarQuiz(objQuiz);

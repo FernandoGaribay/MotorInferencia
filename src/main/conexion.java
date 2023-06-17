@@ -14,7 +14,7 @@ import java.util.Map;
 public class conexion {
 
     private String bd = "motorinferencia";
-    private String url = "jdbc:mysql://localhost:3306/";
+    private String url = "jdbc:mysql://localhost:3308/";
 
     private String user = "root";
     private String password = "";
@@ -105,7 +105,7 @@ public class conexion {
         return nombre;
     }
 
-    private List<Pregunta> obtenerPreguntas(int id) {
+    public List<Pregunta> obtenerPreguntas(int id) {
         List<Pregunta> preguntas = new ArrayList<>();
         try {
             String query = "SELECT * FROM preguntas WHERE idQuiz = ?";

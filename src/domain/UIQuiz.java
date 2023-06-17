@@ -3,14 +3,18 @@ package domain;
 import componentes.campoOpcion;
 import componentes.panelPrincipal;
 import componentes.panelPrincipal.PanelListener;
+import java.awt.event.ActionEvent;
 import java.util.Map;
 import javax.swing.JMenuItem;
+import main.Quiz;
 import main.conexion;
 
 public class UIQuiz extends javax.swing.JFrame implements PanelListener {
 
     private int index = -1;
     private Map<String, Integer> Quizzes;
+    private JMenuItem[] menuItems;
+    private Quiz objQuiz;
 
     public UIQuiz() {
         initComponents();
@@ -19,7 +23,10 @@ public class UIQuiz extends javax.swing.JFrame implements PanelListener {
         panelPrincipal pnlPanelPrincipal = new panelPrincipal();
         pnlPanelPrincipal.setPanelListener(this);
         pnlContenedor.add(pnlPanelPrincipal);
-       
+    }
+    
+    public UIQuiz(Quiz objQuiz){
+        this.objQuiz = objQuiz;
     }
 
     @SuppressWarnings("unchecked")
@@ -63,23 +70,41 @@ public class UIQuiz extends javax.swing.JFrame implements PanelListener {
     public void onButtonClick() {
         System.out.println("Click en el boton");
     }
-
+    
     private void btnCrearQuizMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearQuizMouseClicked
         new UICrearQuiz().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCrearQuizMouseClicked
-
-    private void createMenuQuizes() {
+    
+     private void createMenuQuizes() {
         conexion conexion = new conexion();
-        menuQuizes.removeAll();
 
         conexion.conectar();
+        menuQuizes.removeAll();
         Quizzes = conexion.obtenerQuizzes();
+        menuItems = new JMenuItem[Quizzes.keySet().size()];
+             
+        int i = 0;
         for (String nombreCampo : Quizzes.keySet()) {
             JMenuItem menuItem = new JMenuItem(nombreCampo);
+            menuItems[i] = menuItem;
             menuQuizes.add(menuItem);
+            i++;
         }
+
+        for (int j = 0; j < menuItems.length; j++) {
+            int index = j;
+            menuItems[j].addActionListener((ActionEvent event) -> {               
+                Integer quizId = Quizzes.get(menuItems[index].getText());
+                objQuiz = new conexion().obtenerQuiz(quizId);
+                objQuiz.imprimirDatos();
+                new UIContestarQuiz(objQuiz).setVisible(true);
+                this.dispose();
+            });
+        }
+
         conexion.desconectar();
+
     }
 
 //    public void siguienteRespuesta() {

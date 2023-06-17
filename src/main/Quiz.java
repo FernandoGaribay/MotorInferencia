@@ -27,7 +27,7 @@ public class Quiz {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+   
     public List<Pregunta> getPreguntas() {
         return preguntas;
     }
