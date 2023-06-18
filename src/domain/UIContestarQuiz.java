@@ -2,13 +2,18 @@ package domain;
 import componentes.campoPreguntaQuiz;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+import main.MotorDeInferencia;
 import main.Pregunta;
 import main.Quiz;
+import main.Respuesta;
 
 public class UIContestarQuiz extends javax.swing.JFrame {
     private Quiz objQuizContestar;
     private Pregunta objPregunta;
     private campoPreguntaQuiz campoPregunta;
+    private List<campoPreguntaQuiz> campos = new ArrayList<>();
+    private List<Respuesta> listaRespuestas = new ArrayList<>();
     
     
     public UIContestarQuiz() {
@@ -32,6 +37,7 @@ public class UIContestarQuiz extends javax.swing.JFrame {
 
         for (int i = 0; i < preguntas.size(); i++) {
             campoPregunta = new campoPreguntaQuiz(preguntas.get(i));
+            campos.add(campoPregunta);
             pnlContenedor.add(campoPregunta);
             pnlContenedor.repaint();
             pnlContenedor.revalidate();
@@ -102,7 +108,26 @@ public class UIContestarQuiz extends javax.swing.JFrame {
 
     private void btnTerminarQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarQuizActionPerformed
         //- Los datos se extraeran de la interfaz y de los radio buttons para conseguir el resultado
+        Respuesta respuesta;
+        for (int i = 0; i < objQuizContestar.getPreguntas().size(); i++) {
+                    
+            for (int j = 0; j < objQuizContestar.getPreguntas().get(i).getOpciones().size(); j++) {
+                if (j == campos.get(i).obtenerIndice()) {
+                    listaRespuestas.add(respuesta = new Respuesta(objQuizContestar.getPreguntas().get(i),objQuizContestar.getPreguntas().get(i).getOpciones().get(j)));
+                }
+            }
+            
+           
+        }
+        for(int i = 0;i < listaRespuestas.size();i++){
+            System.out.print(listaRespuestas.get(i).getPregunta().getEnunciado() + " " + listaRespuestas.get(i).getOpcionSeleccionada().getTexto() + "\n");
+        }
         //- Una vez extraidos se ingresan a un objeto de preguntas y respuestas y se evalua
+        MotorDeInferencia objMotor = new MotorDeInferencia();
+        objMotor.evaluarRespuestas(listaRespuestas);
+        JOptionPane.showMessageDialog(null, objMotor.obtenerResultado(), "Resultado", JOptionPane.INFORMATION_MESSAGE);
+        System.out.print(objMotor.obtenerResultado());
+        listaRespuestas = new ArrayList<>();
     }//GEN-LAST:event_btnTerminarQuizActionPerformed
 
     public static void main(String args[]) {

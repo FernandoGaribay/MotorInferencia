@@ -1,7 +1,9 @@
 package componentes;
 
 import java.awt.Font;
+import java.util.Enumeration;
 import java.util.List;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import main.OpcionRespuesta;
@@ -30,6 +32,7 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
             //campoOpcionQuiz campoOpcion = new campoOpcionQuiz(opciones.get(i).getTexto());
             JRadioButton radioButton = new JRadioButton(opciones.get(i).getTexto());
             radioButton.setFont(new Font("Century Gotic", Font.PLAIN, 18));
+            radioButton.setActionCommand(Integer.toString(i));
             btnGroup.add(radioButton);
             pnlOpcionesQuiz.add(radioButton);
             //pnlOpcionesQuiz.add(campoOpcion);
@@ -37,6 +40,20 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
             pnlOpcionesQuiz.revalidate();
         }
     }
+    
+    public int obtenerIndice() {
+    Enumeration<AbstractButton> buttons = btnGroup.getElements();
+    int index = -1;
+    while (buttons.hasMoreElements()) {
+        AbstractButton button = buttons.nextElement();
+        if (button.isSelected()) {
+            String actionCommand = button.getActionCommand();
+            index = Integer.parseInt(actionCommand);
+            break;
+        }
+    }
+    return index;
+}
     
     /*public void obtenerOpciones(){
         List<OpcionRespuesta> opciones = new ArrayList<>();

@@ -14,7 +14,7 @@ import java.util.Map;
 public class conexion {
 
     private String bd = "motorinferencia";
-    private String url = "jdbc:mysql://localhost:3308/";
+    private String url = "jdbc:mysql://localhost:3306/";
 
     private String user = "root";
     private String password = "";
