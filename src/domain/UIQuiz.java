@@ -12,6 +12,7 @@ public class UIQuiz extends javax.swing.JFrame {
 
     private Map<String, Integer> Quizzes;
     private JMenuItem[] menuItems;
+    private JMenuItem[] menuDItems;
     private Quiz objQuiz;
 
     public UIQuiz() {
@@ -33,6 +34,7 @@ public class UIQuiz extends javax.swing.JFrame {
         pnlContenedor = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuQuizes = new javax.swing.JMenu();
+        menuBorrarQuizes = new javax.swing.JMenu();
         btnCrearQuiz = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -44,6 +46,9 @@ public class UIQuiz extends javax.swing.JFrame {
 
         menuQuizes.setText("Quizes");
         jMenuBar1.add(menuQuizes);
+
+        menuBorrarQuizes.setText("Borrar Quiz");
+        jMenuBar1.add(menuBorrarQuizes);
 
         btnCrearQuiz.setText("Crear Quiz");
         btnCrearQuiz.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -71,23 +76,36 @@ public class UIQuiz extends javax.swing.JFrame {
         menuQuizes.removeAll();
         Quizzes = conexion.obtenerQuizzes();
         menuItems = new JMenuItem[Quizzes.keySet().size()];
-             
+        menuDItems = new JMenuItem[Quizzes.keySet().size()];   
+        
         int i = 0;
         for (String nombreCampo : Quizzes.keySet()) {
             JMenuItem menuItem = new JMenuItem(nombreCampo);
+            JMenuItem menuDItem = new JMenuItem(nombreCampo);
             menuItems[i] = menuItem;
+            menuDItems[i] = menuDItem;
             menuQuizes.add(menuItem);
+            menuBorrarQuizes.add(menuDItem);
             i++;
         }
-
+        i = 0;
+            
         for (int j = 0; j < menuItems.length; j++) {
             int index = j;
             menuItems[j].addActionListener((ActionEvent event) -> {               
-                Integer quizId = Quizzes.get(menuItems[index].getText());
+                int quizId = Quizzes.get(menuItems[index].getText());
                 objQuiz = new conexion().obtenerQuiz(quizId);
                 objQuiz.imprimirDatos();
                 new UIContestarQuiz(objQuiz).setVisible(true);
                 this.dispose();
+            });
+            
+            menuDItems[j].addActionListener((ActionEvent event) -> {               
+                int quizId = Quizzes.get(menuDItems[index].getText());
+                conexion.conectar();
+                conexion.eliminarQuiz(quizId);
+                conexion.desconectar();
+                
             });
         }
 
@@ -125,6 +143,7 @@ public class UIQuiz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu btnCrearQuiz;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu menuBorrarQuizes;
     private javax.swing.JMenu menuQuizes;
     private javax.swing.JPanel pnlContenedor;
     // End of variables declaration//GEN-END:variables

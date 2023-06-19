@@ -182,8 +182,9 @@ public class conexion {
     public void guardarQuiz(Quiz objQuiz) {
         
         this.conectar();
-        insertarQuiz();
+        
         nombre = objQuiz.getNombre();
+        insertarQuiz();
         preguntas = objQuiz.getPreguntas();
         resultados = objQuiz.getResultados();
         resultadosIdMap = insertarResultados(resultados);
@@ -355,7 +356,7 @@ public class conexion {
         conexion conect = new conexion();
 
         conect.conectar();
-        conect.eliminarQuiz(3);
+        conect.eliminarQuiz(8);
         conect.desconectar();
     }
 

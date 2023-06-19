@@ -9,6 +9,11 @@
             <Property name="text" type="java.lang.String" value="Quizes"/>
           </Properties>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="menuBorrarQuizes">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Borrar Quiz"/>
+          </Properties>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="btnCrearQuiz">
           <Properties>
             <Property name="text" type="java.lang.String" value="Crear Quiz"/>

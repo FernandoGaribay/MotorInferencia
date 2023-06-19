@@ -7,6 +7,8 @@ import main.Pregunta;
 
 public class campoPregunta extends javax.swing.JPanel {
 
+    private DefaultComboBoxModel<String> comboBoxModel;
+    
     public campoPregunta() {
         initComponents();
 
@@ -35,6 +37,8 @@ public class campoPregunta extends javax.swing.JPanel {
     }
 
     public void setComboBoxModelOpcion(DefaultComboBoxModel<String> comboBoxModel) {
+        this.comboBoxModel = comboBoxModel;
+
         for (Component componente : pnlContenedorOpciones.getComponents()) {
             if (componente instanceof campoOpcion) {
                 campoOpcion campo = (campoOpcion) componente;
@@ -98,6 +102,7 @@ public class campoPregunta extends javax.swing.JPanel {
     private void btnAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirActionPerformed
         campoOpcion obj = new campoOpcion();
 
+        obj.setComboBoxModel(comboBoxModel);
         pnlContenedorOpciones.add(obj);
         pnlContenedorOpciones.revalidate();
         pnlContenedorOpciones.repaint();

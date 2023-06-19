@@ -73,14 +73,16 @@ public class campoOpcion extends javax.swing.JPanel {
     }
 
     public void setComboBoxModel(DefaultComboBoxModel<String> comboBoxModel) {
-        DefaultComboBoxModel<String> newComboBoxModel = new DefaultComboBoxModel<>();
+        if (comboBoxModel != null) {
+            DefaultComboBoxModel<String> newComboBoxModel = new DefaultComboBoxModel<>();
 
-        for (int i = 0; i < comboBoxModel.getSize(); i++) {
-            String item = comboBoxModel.getElementAt(i);
-            newComboBoxModel.addElement(item);
+            for (int i = 0; i < comboBoxModel.getSize(); i++) {
+                String item = comboBoxModel.getElementAt(i);
+                newComboBoxModel.addElement(item);
+            }
+
+            comboRespuesta.setModel(newComboBoxModel);
         }
-
-        comboRespuesta.setModel(newComboBoxModel);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
