@@ -37,6 +37,7 @@ public class conexion {
         }
     }
 
+    // <editor-fold desc="Metodos de conexion">
     private void conectar() {
         try {
             connect = DriverManager.getConnection(url + bd + "?serverTimezone=GMT-5", user, password);
@@ -56,7 +57,9 @@ public class conexion {
             System.out.println(ex.getMessage());
         }
     }
+    // </editor-fold>
 
+    //<editor-fold desc="Obtener Quiz de la BD">
     public Quiz obtenerQuiz(int id) {
         Quiz objQuiz = new Quiz();
 
@@ -170,6 +173,7 @@ public class conexion {
         }
         return objRespuestas;
     }
+    //</editor-fold>
 
     // <editor-fold desc="Guardar Quiz en la BD">
     public void guardarQuiz(Quiz objQuiz) {
