@@ -15,7 +15,9 @@ create table preguntas (
 
 create table resultados (
 	id int primary key auto_increment,
-	nombre varchar(255)
+	nombre varchar(255),
+    idQuiz int,
+    foreign key (idQuiz) references quizzes(id)
 );
 
 create table opciones (
