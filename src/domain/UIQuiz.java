@@ -1,6 +1,5 @@
 package domain;
 
-import componentes.campoOpcion;
 import componentes.panelPrincipal;
 import java.awt.event.ActionEvent;
 import java.util.Map;
@@ -12,18 +11,18 @@ public class UIQuiz extends javax.swing.JFrame {
 
     private Map<String, Integer> Quizzes;
     private JMenuItem[] menuItems;
-    private JMenuItem[] menuDItems;
+    private JMenuItem[] menuBorrarItems;
     private Quiz objQuiz;
 
     public UIQuiz() {
         initComponents();
-        createMenuQuizes();
+        eventosMenus();
 
         panelPrincipal pnlPanelPrincipal = new panelPrincipal();
         pnlContenedor.add(pnlPanelPrincipal);
     }
-    
-    public UIQuiz(Quiz objQuiz){
+
+    public UIQuiz(Quiz objQuiz) {
         this.objQuiz = objQuiz;
     }
 
@@ -63,56 +62,64 @@ public class UIQuiz extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void btnCrearQuizMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearQuizMouseClicked
         new UICrearQuiz().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCrearQuizMouseClicked
-    
-     private void createMenuQuizes() {
+
+    private void eventosMenus() {
         conexion conexion = new conexion();
+        actualizarMenus();
 
         conexion.conectar();
-        menuQuizes.removeAll();
-        Quizzes = conexion.obtenerQuizzes();
-        menuItems = new JMenuItem[Quizzes.keySet().size()];
-        menuDItems = new JMenuItem[Quizzes.keySet().size()];   
-        
-        int i = 0;
-        for (String nombreCampo : Quizzes.keySet()) {
-            JMenuItem menuItem = new JMenuItem(nombreCampo);
-            JMenuItem menuDItem = new JMenuItem(nombreCampo);
-            menuItems[i] = menuItem;
-            menuDItems[i] = menuDItem;
-            menuQuizes.add(menuItem);
-            menuBorrarQuizes.add(menuDItem);
-            i++;
-        }
-        i = 0;
-            
         for (int j = 0; j < menuItems.length; j++) {
             int index = j;
-            menuItems[j].addActionListener((ActionEvent event) -> {               
+
+            menuItems[j].addActionListener((ActionEvent event) -> {
                 int quizId = Quizzes.get(menuItems[index].getText());
                 objQuiz = new conexion().obtenerQuiz(quizId);
                 objQuiz.imprimirDatos();
                 new UIContestarQuiz(objQuiz).setVisible(true);
                 this.dispose();
             });
-            
-            menuDItems[j].addActionListener((ActionEvent event) -> {               
-                int quizId = Quizzes.get(menuDItems[index].getText());
+
+            menuBorrarItems[j].addActionListener((ActionEvent event) -> {
+                int quizId = Quizzes.get(menuBorrarItems[index].getText());
                 conexion.conectar();
                 conexion.eliminarQuiz(quizId);
                 conexion.desconectar();
-                
+                actualizarMenus();
+
             });
         }
-
         conexion.desconectar();
 
     }
-    
+
+    public void actualizarMenus() {
+        conexion conexion = new conexion();
+
+        conexion.conectar();
+        menuQuizes.removeAll();
+        menuBorrarQuizes.removeAll();
+        Quizzes = conexion.obtenerQuizzes();
+        menuItems = new JMenuItem[Quizzes.keySet().size()];
+        menuBorrarItems = new JMenuItem[Quizzes.keySet().size()];
+
+        int i = 0;
+        for (String nombreCampo : Quizzes.keySet()) {
+            JMenuItem menuItem = new JMenuItem(nombreCampo);
+            JMenuItem menuDItem = new JMenuItem(nombreCampo);
+            menuItems[i] = menuItem;
+            menuBorrarItems[i] = menuDItem;
+            menuQuizes.add(menuItem);
+            menuBorrarQuizes.add(menuDItem);
+            i++;
+        }
+        conexion.desconectar();
+    }
+
     public static void main(String args[]) {
 
         try {
