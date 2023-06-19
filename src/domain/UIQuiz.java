@@ -72,7 +72,6 @@ public class UIQuiz extends javax.swing.JFrame {
         conexion conexion = new conexion();
         actualizarMenus();
 
-        conexion.conectar();
         for (int j = 0; j < menuItems.length; j++) {
             int index = j;
 
@@ -86,21 +85,15 @@ public class UIQuiz extends javax.swing.JFrame {
 
             menuBorrarItems[j].addActionListener((ActionEvent event) -> {
                 int quizId = Quizzes.get(menuBorrarItems[index].getText());
-                conexion.conectar();
                 conexion.eliminarQuiz(quizId);
-                conexion.desconectar();
                 actualizarMenus();
-
             });
         }
-        conexion.desconectar();
-
     }
 
     public void actualizarMenus() {
         conexion conexion = new conexion();
 
-        conexion.conectar();
         menuQuizes.removeAll();
         menuBorrarQuizes.removeAll();
         Quizzes = conexion.obtenerQuizzes();
@@ -117,7 +110,6 @@ public class UIQuiz extends javax.swing.JFrame {
             menuBorrarQuizes.add(menuDItem);
             i++;
         }
-        conexion.desconectar();
     }
 
     public static void main(String args[]) {

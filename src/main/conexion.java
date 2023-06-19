@@ -15,11 +15,10 @@ public class conexion {
 
     private String bd = "motorinferencia";
     private String url = "jdbc:mysql://localhost:3306/";
-
     private String user = "root";
     private String password = "";
-
     private String driver = "com.mysql.cj.jdbc.Driver";
+
     private Connection connect;
 
     private String nombre;
@@ -28,22 +27,6 @@ public class conexion {
     private Map<String, Integer> resultadosIdMap;
 
     int idQuiz = -1;
-
-//    private PreparedStatement stInsertar;
-//    private PreparedStatement stBorrarQA;
-//
-//    private PreparedStatement stBorrarResutltado;
-//    private PreparedStatement stBorrarQuiz;
-
-//    private PreparedStatement stModificarQuiz;
-//    private PreparedStatement stModificarPregunta;
-//    private PreparedStatement stModificarOpciones;
-//    private PreparedStatement stModificarResultados;
-
-
-    private PreparedStatement mostrarPregunta;
-    private PreparedStatement mostrarResultados;
-    private PreparedStatement mostrarRespuesta;
 
     public conexion() {
         try {
@@ -54,20 +37,20 @@ public class conexion {
         }
     }
 
-    public void conectar() {
+    private void conectar() {
         try {
             connect = DriverManager.getConnection(url + bd + "?serverTimezone=GMT-5", user, password);
-            System.out.println("Se logró la conexion");
+//          System.out.println("Se logró la conexion");
         } catch (SQLException ex) {
             System.out.println("No se conecto a bd");
             System.out.println(ex.getMessage());
         }
     }
 
-    public void desconectar() {
+    private void desconectar() {
         try {
             connect.close();
-            System.out.println("Se logró desconectar");
+//          System.out.println("Se logró desconectar");
         } catch (SQLException ex) {
             System.out.println("no se desconecto");
             System.out.println(ex.getMessage());
@@ -75,7 +58,6 @@ public class conexion {
     }
 
     public Quiz obtenerQuiz(int id) {
-
         Quiz objQuiz = new Quiz();
 
         this.conectar();
@@ -83,14 +65,17 @@ public class conexion {
         objQuiz.setNombre(obtenerNombreQuiz(id));
         objQuiz.setPreguntas(obtenerPreguntas(id));
         this.desconectar();
-        
+
         return objQuiz;
     }
 
     private String obtenerNombreQuiz(int id) {
+        String query = "SELECT * FROM quizzes WHERE id = ?";
+        PreparedStatement mostrarPregunta;
         String nombre = "";
+
         try {
-            String query = "SELECT * FROM quizzes WHERE id = ?";
+
             mostrarPregunta = connect.prepareStatement(query);
             mostrarPregunta.setInt(1, id);
             ResultSet resultSet = mostrarPregunta.executeQuery();
@@ -105,10 +90,12 @@ public class conexion {
         return nombre;
     }
 
-    public List<Pregunta> obtenerPreguntas(int id) {
+    private List<Pregunta> obtenerPreguntas(int id) {
+        String query = "SELECT * FROM preguntas WHERE idQuiz = ?";
+        PreparedStatement mostrarPregunta;
         List<Pregunta> preguntas = new ArrayList<>();
+
         try {
-            String query = "SELECT * FROM preguntas WHERE idQuiz = ?";
             mostrarPregunta = connect.prepareStatement(query);
             mostrarPregunta.setInt(1, id);
             ResultSet resultSet = mostrarPregunta.executeQuery();
@@ -128,9 +115,12 @@ public class conexion {
     }
 
     private List<OpcionRespuesta> obtenerOpciones(int idPregunta) {
+        String query = "SELECT * FROM opciones WHERE idPregunta = ?";
+        PreparedStatement mostrarRespuesta;
         List<OpcionRespuesta> opciones = new ArrayList<>();
+
         try {
-            String query = "SELECT * FROM opciones WHERE idPregunta = ?";
+
             mostrarRespuesta = connect.prepareStatement(query);
             mostrarRespuesta.setInt(1, idPregunta);
             ResultSet resultSet = mostrarRespuesta.executeQuery();
@@ -158,10 +148,12 @@ public class conexion {
     }
 
     private List<String> obtenerResultados(int id) {
+        String query = "SELECT * FROM resultados WHERE idQuiz = ?";
+        PreparedStatement mostrarResultados;
         List<String> objRespuestas = new ArrayList<>();
         resultadosIdMap = new HashMap<String, Integer>();
+
         try {
-            String query = "SELECT * FROM resultados WHERE idQuiz = ?";
             mostrarResultados = connect.prepareStatement(query);
             mostrarResultados.setInt(1, id);
             ResultSet resultSet = mostrarResultados.executeQuery();
@@ -179,10 +171,10 @@ public class conexion {
         return objRespuestas;
     }
 
+    // <editor-fold desc="Guardar Quiz en la BD">
     public void guardarQuiz(Quiz objQuiz) {
-        
+
         this.conectar();
-        
         nombre = objQuiz.getNombre();
         insertarQuiz();
         preguntas = objQuiz.getPreguntas();
@@ -190,14 +182,14 @@ public class conexion {
         resultadosIdMap = insertarResultados(resultados);
         insertarPreguntas();
         this.desconectar();
-        
+
         System.out.println("El quiz fue guardado correctamente.");
     }
 
-    public void insertarQuiz() {
+    private void insertarQuiz() {
         String sql = "INSERT INTO quizzes (nombre) VALUES (?)";
         PreparedStatement stInsertar;
-        
+
         try {
             stInsertar = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stInsertar.setString(1, nombre);
@@ -238,7 +230,7 @@ public class conexion {
         }
     }
 
-    public void insertarOpcion(List<OpcionRespuesta> opciones, int idPregunta) {
+    private void insertarOpcion(List<OpcionRespuesta> opciones, int idPregunta) {
         String sql = "INSERT INTO opciones (texto, idPregunta, idResultado, puntos) VALUES (?, ?, ?, ?)";
         PreparedStatement stInsertar;
 
@@ -260,7 +252,7 @@ public class conexion {
         }
     }
 
-    public Map<String, Integer> insertarResultados(List<String> resultados) {
+    private Map<String, Integer> insertarResultados(List<String> resultados) {
         String sql = "INSERT INTO resultados (nombre, idQuiz) VALUES (?, ?)";
         PreparedStatement stInsertar;
         Map<String, Integer> resultadosIdMap = new HashMap<>();
@@ -285,10 +277,62 @@ public class conexion {
 
         return resultadosIdMap;
     }
+    // </editor-fold>
+
+    // <editor-fold desc="Borrar Quiz de la BD">
+    public void eliminarQuiz(int idQuiz) {
+        this.conectar();
+        try {
+            eliminarOpciones(idQuiz);
+            eliminarPreguntas(idQuiz);
+            eliminarResultados(idQuiz);
+            eliminarQuizById(idQuiz);
+
+            System.out.println("Quiz eliminado");
+        } catch (SQLException ex) {
+            System.out.println("Error al eliminar el quiz");
+            System.out.println(ex.getMessage());
+        }
+        this.desconectar();
+    }
+
+    private void eliminarPreguntas(int idQuiz) throws SQLException {
+        String queryPreguntas = "DELETE FROM preguntas WHERE idQuiz = ?";
+        PreparedStatement pstmtPreguntas = connect.prepareStatement(queryPreguntas);
+
+        pstmtPreguntas.setInt(1, idQuiz);
+        pstmtPreguntas.executeUpdate();
+    }
+
+    private void eliminarOpciones(int idQuiz) throws SQLException {
+        String queryOpciones = "DELETE FROM opciones WHERE idPregunta IN (SELECT id FROM preguntas WHERE idQuiz = ?)";
+        PreparedStatement pstmtOpciones = connect.prepareStatement(queryOpciones);
+
+        pstmtOpciones.setInt(1, idQuiz);
+        pstmtOpciones.executeUpdate();
+    }
+
+    private void eliminarResultados(int idQuiz) throws SQLException {
+        String queryResultados = "DELETE FROM resultados WHERE idQuiz = ?";
+        PreparedStatement pstmtResultados = connect.prepareStatement(queryResultados);
+
+        pstmtResultados.setInt(1, idQuiz);
+        pstmtResultados.executeUpdate();
+    }
+
+    private void eliminarQuizById(int idQuiz) throws SQLException {
+        String queryQuiz = "DELETE FROM quizzes WHERE id = ?";
+        PreparedStatement pstmtQuiz = connect.prepareStatement(queryQuiz);
+
+        pstmtQuiz.setInt(1, idQuiz);
+        pstmtQuiz.executeUpdate();
+    }
+    // </editor-fold>
 
     public Map<String, Integer> obtenerQuizzes() {
         Map<String, Integer> nombres = new HashMap<>();
 
+        this.conectar();
         try {
             Statement statement = connect.createStatement();
             String sql = "SELECT * FROM quizzes";
@@ -300,64 +344,19 @@ public class conexion {
                 nombres.put(nombre, id);
             }
 
-            resultSet.close();
-            statement.close();
         } catch (SQLException ex) {
             System.out.println("Error al obtener los nombres");
             System.out.println(ex.getMessage());
         }
+        this.desconectar();
 
         return nombres;
     }
 
-    
-    public void eliminarQuiz(int idQuiz) {
-        String queryPreguntas = "DELETE FROM preguntas WHERE idQuiz = ?";
-        String queryOpciones = "DELETE FROM opciones WHERE idPregunta IN (SELECT id FROM preguntas WHERE idQuiz = ?)";
-        String queryResultados = "DELETE FROM resultados WHERE idQuiz = ?";
-        String queryQuiz = "DELETE FROM quizzes WHERE id = ?";
-
-        try {
-            PreparedStatement pstmtPreguntas = connect.prepareStatement(queryPreguntas);
-            PreparedStatement pstmtOpciones = connect.prepareStatement(queryOpciones);
-            PreparedStatement pstmtResultados = connect.prepareStatement(queryResultados);
-            PreparedStatement pstmtQuiz = connect.prepareStatement(queryQuiz);
-
-            pstmtPreguntas.setInt(1, idQuiz);
-            pstmtOpciones.setInt(1, idQuiz);
-            pstmtResultados.setInt(1, idQuiz);
-            pstmtQuiz.setInt(1, idQuiz);
-
-            connect.setAutoCommit(false); // Desactivar el autocommit
-
-            pstmtOpciones.executeUpdate();
-            pstmtPreguntas.executeUpdate();
-            pstmtResultados.executeUpdate();
-            pstmtQuiz.executeUpdate();
-
-            connect.commit(); // Confirmar los cambios
-
-            System.out.println("Quiz eliminado exitosamente");
-        } catch (SQLException ex) {
-            System.out.println("Error al eliminar el quiz");
-            System.out.println(ex.getMessage());
-
-            try {
-                connect.rollback(); // Revertir los cambios en caso de error
-            } catch (SQLException e) {
-                System.out.println("Error al hacer rollback");
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-    
-    
     public static void main(String[] args) throws SQLException {
         conexion conect = new conexion();
-
-        conect.conectar();
-        conect.eliminarQuiz(8);
-        conect.desconectar();
+        
+        conect.eliminarQuiz(14);
     }
 
     public static Quiz testQuiz() {
@@ -389,10 +388,23 @@ public class conexion {
 
         return objQuiz;
     }
-
 }
 
+// <editor-fold desc="Codigo Modificar">
 /*
+    private PreparedStatement stInsertar;
+    private PreparedStatement stBorrarQA;
+
+    private PreparedStatement stBorrarResutltado;
+    private PreparedStatement stBorrarQuiz;
+
+    private PreparedStatement stModificarQuiz;
+    private PreparedStatement stModificarPregunta;
+    private PreparedStatement stModificarOpciones;
+    private PreparedStatement stModificarResultados;
+
+
+
     public void borrarQuiz(int id) {
         try {
             //borrarPreguntaRespuesta(id);
@@ -529,4 +541,5 @@ public class conexion {
         }
 
     }
-*/
+ */
+// </editor-fold>

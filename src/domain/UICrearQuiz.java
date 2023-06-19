@@ -25,16 +25,6 @@ public class UICrearQuiz extends javax.swing.JFrame {
         pnlContenedorPreguntas.add(p2);
     }
 
-    private void inicializar() {
-        campoPregunta p1 = new campoPregunta();
-        campoPregunta p2 = new campoPregunta();
-        campoPregunta p3 = new campoPregunta();
-
-        pnlContenedorPreguntas.add(p1);
-        pnlContenedorPreguntas.add(p2);
-        pnlContenedorPreguntas.add(p3);
-    }
-
     public DefaultComboBoxModel<String> obtenerComboBoxModel() {
         DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
         DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
@@ -223,12 +213,8 @@ public class UICrearQuiz extends javax.swing.JFrame {
             }
         }
         Quiz objQuiz = new Quiz(nombreQuiz, preguntas, resultados);
-        //objQuiz.setNombre(nombreQuiz);
         objQuiz.imprimirDatos();
-        objConexion.conectar();
         objConexion.guardarQuiz(objQuiz);
-        objConexion.desconectar();
-
     }//GEN-LAST:event_btnGuardarQuizActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
