@@ -9,6 +9,7 @@ import main.Quiz;
 import main.Respuesta;
 
 public class UIContestarQuiz extends javax.swing.JFrame {
+    
     private Quiz objQuizContestar;
     private Pregunta objPregunta;
     private campoPreguntaQuiz campoPregunta;
@@ -43,8 +44,6 @@ public class UIContestarQuiz extends javax.swing.JFrame {
             pnlContenedor.revalidate();
         }
     }
-    
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -116,17 +115,15 @@ public class UIContestarQuiz extends javax.swing.JFrame {
                     listaRespuestas.add(respuesta = new Respuesta(objQuizContestar.getPreguntas().get(i),objQuizContestar.getPreguntas().get(i).getOpciones().get(j)));
                 }
             }
-            
-           
         }
-        for(int i = 0;i < listaRespuestas.size();i++){
-            System.out.print(listaRespuestas.get(i).getPregunta().getEnunciado() + " " + listaRespuestas.get(i).getOpcionSeleccionada().getTexto() + "\n");
-        }
+        
+        
         //- Una vez extraidos se ingresan a un objeto de preguntas y respuestas y se evalua
         MotorDeInferencia objMotor = new MotorDeInferencia();
         objMotor.evaluarRespuestas(listaRespuestas);
         JOptionPane.showMessageDialog(null, objMotor.obtenerResultado(), "Resultado", JOptionPane.INFORMATION_MESSAGE);
         System.out.print(objMotor.obtenerResultado());
+       
         listaRespuestas = new ArrayList<>();
     }//GEN-LAST:event_btnTerminarQuizActionPerformed
 

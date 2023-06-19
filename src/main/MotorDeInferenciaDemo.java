@@ -8,16 +8,12 @@ public class MotorDeInferenciaDemo {
     public static void main(String[] args) {
         // Crear preguntas y opciones de respuesta
         Pregunta pregunta1 = new Pregunta("¿Disfrutas de estar rodeado de mucha gente?");
-        pregunta1.agregarOpcionRespuesta(new OpcionRespuesta("Si", "Extroversión", 1));
-        pregunta1.agregarOpcionRespuesta(new OpcionRespuesta("No", "Introversión", 3));
+        pregunta1.agregarOpcionRespuesta(new OpcionRespuesta("Si", "Extroversión", 3));
+        pregunta1.agregarOpcionRespuesta(new OpcionRespuesta("No", "Introversión", 1));
 
         Pregunta pregunta2 = new Pregunta("¿Prefieres actividades tranquilas y solitarias?");
-        
-        pregunta2.agregarOpcionRespuesta(new OpcionRespuesta("Sí"));
-        pregunta2.getOpciones().get(0).agregarPuntaje("Extroversión", 1);
-
-        pregunta2.agregarOpcionRespuesta(new OpcionRespuesta("No"));
-        pregunta2.getOpciones().get(1).agregarPuntaje("Introversión", 3);
+        pregunta2.agregarOpcionRespuesta(new OpcionRespuesta("Si", "Introversión", 3));
+        pregunta2.agregarOpcionRespuesta(new OpcionRespuesta("No", "Extroversión", 1));
 
         // Crear respuestas del test
         List<Respuesta> respuestas = new ArrayList<>();

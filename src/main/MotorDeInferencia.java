@@ -10,11 +10,16 @@ public class MotorDeInferencia {
 
     public MotorDeInferencia() {
         puntajes = new HashMap<>();
-        puntajes.put("Extroversión", 0);
-        puntajes.put("Introversión", 0);
     }
 
     public void evaluarRespuestas(List<Respuesta> respuestas) {
+        for (Respuesta respuesta : respuestas) {
+            String opcionSeleccionada = respuesta.getOpcionSeleccionada().getDimension();
+            if (!puntajes.containsKey(opcionSeleccionada)) {
+                puntajes.put(opcionSeleccionada, 0);
+            }
+        }
+        
         for (Respuesta respuesta : respuestas) {
             String dimension = respuesta.getOpcionSeleccionada().getDimension();
             int puntaje = respuesta.getOpcionSeleccionada().getPuntaje();
@@ -43,8 +48,7 @@ public class MotorDeInferencia {
             } else if (puntaje == puntajeMaximo) {
                 resultado = "Neutral";
             }
-        }
-
+        } 
         return resultado;
     }
 

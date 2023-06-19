@@ -2,11 +2,8 @@ package componentes;
 
 public class panelPrincipal extends javax.swing.JPanel {
 
-    private PanelListener listener;
-
     public panelPrincipal() {
         initComponents();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -15,7 +12,6 @@ public class panelPrincipal extends javax.swing.JPanel {
 
         lblLogo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        btnEmpezar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -33,15 +29,6 @@ public class panelPrincipal extends javax.swing.JPanel {
         jLabel1.setText("Creador de Quizzes");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 260, 65));
 
-        btnEmpezar.setText("Empezar");
-        btnEmpezar.setFocusPainted(false);
-        btnEmpezar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEmpezarActionPerformed(evt);
-            }
-        });
-        add(btnEmpezar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, 290, 40));
-
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
@@ -58,23 +45,7 @@ public class panelPrincipal extends javax.swing.JPanel {
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 800, 160));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEmpezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpezarActionPerformed
-        if (listener != null) {
-            listener.onButtonClick();
-        }
-    }//GEN-LAST:event_btnEmpezarActionPerformed
-
-    public interface PanelListener {
-        void onButtonClick();
-    }
-
-    public void setPanelListener(PanelListener listener) {
-        this.listener = listener;
-    }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEmpezar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

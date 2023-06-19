@@ -2,16 +2,14 @@ package domain;
 
 import componentes.campoOpcion;
 import componentes.panelPrincipal;
-import componentes.panelPrincipal.PanelListener;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 import javax.swing.JMenuItem;
 import main.Quiz;
 import main.conexion;
 
-public class UIQuiz extends javax.swing.JFrame implements PanelListener {
+public class UIQuiz extends javax.swing.JFrame {
 
-    private int index = -1;
     private Map<String, Integer> Quizzes;
     private JMenuItem[] menuItems;
     private Quiz objQuiz;
@@ -21,7 +19,6 @@ public class UIQuiz extends javax.swing.JFrame implements PanelListener {
         createMenuQuizes();
 
         panelPrincipal pnlPanelPrincipal = new panelPrincipal();
-        pnlPanelPrincipal.setPanelListener(this);
         pnlContenedor.add(pnlPanelPrincipal);
     }
     
@@ -37,7 +34,6 @@ public class UIQuiz extends javax.swing.JFrame implements PanelListener {
         jMenuBar1 = new javax.swing.JMenuBar();
         menuQuizes = new javax.swing.JMenu();
         btnCrearQuiz = new javax.swing.JMenu();
-        btnReiniciarQuiz = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -57,19 +53,11 @@ public class UIQuiz extends javax.swing.JFrame implements PanelListener {
         });
         jMenuBar1.add(btnCrearQuiz);
 
-        btnReiniciarQuiz.setText("Reiniciar Quiz");
-        jMenuBar1.add(btnReiniciarQuiz);
-
         setJMenuBar(jMenuBar1);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    @Override
-    public void onButtonClick() {
-        System.out.println("Click en el boton");
-    }
     
     private void btnCrearQuizMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearQuizMouseClicked
         new UICrearQuiz().setVisible(true);
@@ -106,16 +94,6 @@ public class UIQuiz extends javax.swing.JFrame implements PanelListener {
         conexion.desconectar();
 
     }
-
-//    public void siguienteRespuesta() {
-//        if (index < preguntas.size() - 1) {
-//            index++;
-//            this.lblPregunta.setText(preguntas.get(index).getEnunciado());
-//        } else {
-//            motor.evaluarRespuestas(respuestas);
-//            lblPregunta.setText(motor.obtenerResultado());
-//        }
-//    }
     
     public static void main(String args[]) {
 
@@ -146,7 +124,6 @@ public class UIQuiz extends javax.swing.JFrame implements PanelListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu btnCrearQuiz;
-    private javax.swing.JMenu btnReiniciarQuiz;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuQuizes;
     private javax.swing.JPanel pnlContenedor;

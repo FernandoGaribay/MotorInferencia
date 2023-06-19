@@ -31,6 +31,7 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
         for (int i = 0; i < opciones.size(); i++) {
             //campoOpcionQuiz campoOpcion = new campoOpcionQuiz(opciones.get(i).getTexto());
             JRadioButton radioButton = new JRadioButton(opciones.get(i).getTexto());
+            radioButton.setFocusPainted(false);
             radioButton.setFont(new Font("Century Gotic", Font.PLAIN, 18));
             radioButton.setActionCommand(Integer.toString(i));
             btnGroup.add(radioButton);
@@ -75,6 +76,7 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
 
         pnlOpcionesQuiz = new javax.swing.JPanel();
         lblEnunciadoPregunta = new javax.swing.JLabel();
+        pnlSeparador = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -87,11 +89,15 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
         lblEnunciadoPregunta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblEnunciadoPregunta.setText("Pregunta (ejemplo)");
         add(lblEnunciadoPregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 880, 40));
+
+        pnlSeparador.setBackground(new java.awt.Color(255, 255, 255));
+        add(pnlSeparador, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 880, 10));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblEnunciadoPregunta;
     private javax.swing.JPanel pnlOpcionesQuiz;
+    private javax.swing.JPanel pnlSeparador;
     // End of variables declaration//GEN-END:variables
 }

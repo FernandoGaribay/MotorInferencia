@@ -17,11 +17,6 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCrearQuizMouseClicked"/>
           </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="btnReiniciarQuiz">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Reiniciar Quiz"/>
-          </Properties>
-        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
