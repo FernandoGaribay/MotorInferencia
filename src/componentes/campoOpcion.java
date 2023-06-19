@@ -1,5 +1,7 @@
 package componentes;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import main.OpcionRespuesta;
@@ -25,7 +27,17 @@ public class campoOpcion extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(412, 35));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        txtPregunta.setForeground(java.awt.Color.gray);
         txtPregunta.setText("Opcion");
+        txtPregunta.setBorder(BorderFactory.createCompoundBorder(txtPregunta.getBorder(), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
+        txtPregunta.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtPreguntaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtPreguntaFocusLost(evt);
+            }
+        });
         add(txtPregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 7, 190, -1));
 
         comboRespuesta.setModel(new DefaultComboBoxModel<>());
@@ -61,6 +73,20 @@ public class campoOpcion extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_lblEliminarMouseClicked
+
+    private void txtPreguntaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPreguntaFocusGained
+        if (txtPregunta.getText().equals("Opcion")) {
+            txtPregunta.setText("");
+            txtPregunta.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_txtPreguntaFocusGained
+
+    private void txtPreguntaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPreguntaFocusLost
+        if (txtPregunta.getText().isBlank()) {
+            txtPregunta.setText("Opcion");
+            txtPregunta.setForeground(Color.DARK_GRAY);
+        }
+    }//GEN-LAST:event_txtPreguntaFocusLost
 
     public OpcionRespuesta getOpcion() {
         OpcionRespuesta objOpcion = new OpcionRespuesta();

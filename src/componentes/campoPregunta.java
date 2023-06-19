@@ -1,6 +1,8 @@
 package componentes;
 
+import java.awt.Color;
 import java.awt.Component;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import main.Pregunta;
@@ -84,7 +86,17 @@ public class campoPregunta extends javax.swing.JPanel {
         pnlBackground.add(scrollContenedorOpciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 70, 400, 120));
 
         txtEnunciado.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        txtEnunciado.setForeground(java.awt.Color.gray);
         txtEnunciado.setText("Enunciado de la pregunta");
+        txtEnunciado.setBorder(BorderFactory.createCompoundBorder(txtEnunciado.getBorder(), BorderFactory.createEmptyBorder(0, 10, 0, 0)));
+        txtEnunciado.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtEnunciadoFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtEnunciadoFocusLost(evt);
+            }
+        });
         pnlBackground.add(txtEnunciado, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 25, 400, 40));
 
         btnEliminar.setText("Eliminar pregunta");
@@ -117,6 +129,20 @@ public class campoPregunta extends javax.swing.JPanel {
             System.gc(); // Sugerir al recolector de basura que se ejecute
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void txtEnunciadoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEnunciadoFocusGained
+        if(txtEnunciado.getText().equals("Enunciado de la pregunta")){
+            txtEnunciado.setText("");
+            txtEnunciado.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_txtEnunciadoFocusGained
+
+    private void txtEnunciadoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEnunciadoFocusLost
+        if (txtEnunciado.getText().isBlank()){
+            txtEnunciado.setText("Enunciado de la pregunta");
+            txtEnunciado.setForeground(Color.DARK_GRAY);
+        }
+    }//GEN-LAST:event_txtEnunciadoFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

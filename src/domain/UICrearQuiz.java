@@ -1,9 +1,11 @@
 package domain;
 
 import componentes.campoPregunta;
+import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -65,12 +67,24 @@ public class UICrearQuiz extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnlBackground.setBackground(new java.awt.Color(255, 255, 255));
         pnlBackground.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtNombreQuiz.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        txtNombreQuiz.setForeground(java.awt.Color.gray);
+        txtNombreQuiz.setText("Titulo del Quiz");
+        txtNombreQuiz.setBorder(BorderFactory.createCompoundBorder(txtNombreQuiz.getBorder(), BorderFactory.createEmptyBorder(0, 10, 0, 0)));
+        txtNombreQuiz.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNombreQuizFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtNombreQuizFocusLost(evt);
+            }
+        });
         pnlBackground.add(txtNombreQuiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 300, 40));
 
         lblRespuestas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -185,7 +199,7 @@ public class UICrearQuiz extends javax.swing.JFrame {
         List<Pregunta> preguntas = new ArrayList<>();
         List<String> resultados = new ArrayList<>();
 
-        if (txtNombreQuiz.getText().isEmpty()) {
+        if (txtNombreQuiz.getText().isEmpty() || txtNombreQuiz.getText().equals("Titulo del Quiz")) {
             JOptionPane.showMessageDialog(this, "El campo \"Nombre del Quiz\" no puede estar vacio.");
             return;
         }
@@ -221,6 +235,20 @@ public class UICrearQuiz extends javax.swing.JFrame {
         new UIQuiz().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void txtNombreQuizFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreQuizFocusGained
+        if(txtNombreQuiz.getText().equals("Titulo del Quiz")){
+            txtNombreQuiz.setText("");
+            txtNombreQuiz.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_txtNombreQuizFocusGained
+
+    private void txtNombreQuizFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreQuizFocusLost
+        if (txtNombreQuiz.getText().isBlank()){
+            txtNombreQuiz.setText("Titulo del Quiz");
+            txtNombreQuiz.setForeground(Color.DARK_GRAY);
+        }
+    }//GEN-LAST:event_txtNombreQuizFocusLost
 
     public static void main(String args[]) {
 
