@@ -50,13 +50,13 @@ public class MotorDeInferencia {
                 puntajeMaximo = puntaje;
                 resultado[0] = dimension;
             } else if (puntaje == puntajeMaximo) {
-//                resultado[0] = "Neutral";
+                resultado[0] = resultado[0] + " y " + dimension;
             }
         }
         if (mapResultados.containsKey(resultado[0])){
             resultado[1] = mapResultados.get(resultado[0]);
         } else {
-            resultado[1] = "Te encuentras en un estado neutral";
+            resultado[1] = "Te encuentras en un estado neutral entre ambos resultados";
         }
         
         return resultado;
