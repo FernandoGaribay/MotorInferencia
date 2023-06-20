@@ -56,9 +56,26 @@ public class MotorDeInferencia {
         if (mapResultados.containsKey(resultado[0])){
             resultado[1] = mapResultados.get(resultado[0]);
         } else {
-            resultado[1] = "Te encuentras en un estado neutral entre ambos resultados";
+            resultado[1] = procesarCadena(resultado[0], mapResultados);
         }
         
+        return resultado;
+    }
+    
+    private String procesarCadena(String cadena, Map<String, String> mapResultados) {
+        String resultado = "";
+
+        if (cadena.contains(" y ")) {
+            String[] substrings = cadena.split(" y ");
+            if (substrings.length == 2) {
+                String string1 = substrings[0];
+                String string2 = substrings[1];
+                resultado = "\nTe encuentras en un estado neutral entre ambas respuestas: \n" + mapResultados.get(string1) + "\n" + mapResultados.get(string2);
+            }
+        } else {
+            resultado = mapResultados.get(cadena);
+        }
+
         return resultado;
     }
 }
