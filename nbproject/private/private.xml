@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/garib/OneDrive/Escritorio/MotorInferencia/src/componentes/campoPregunta.java</file>
+            <file>file:/C:/Users/garib/OneDrive/Escritorio/MotorInferencia/src/componentes/campoPreguntaQuiz.java</file>
+            <file>file:/C:/Users/garib/OneDrive/Escritorio/MotorInferencia/src/domain/UIContestarQuiz.java</file>
             <file>file:/C:/Users/garib/OneDrive/Escritorio/MotorInferencia/src/main/conexion.java</file>
             <file>file:/C:/Users/garib/OneDrive/Escritorio/MotorInferencia/src/domain/UICrearQuiz.java</file>
-            <file>file:/C:/Users/garib/OneDrive/Escritorio/MotorInferencia/src/componentes/campoOpcion.java</file>
             <file>file:/C:/Users/garib/OneDrive/Escritorio/MotorInferencia/src/domain/UIQuiz.java</file>
         </group>
     </open-files>

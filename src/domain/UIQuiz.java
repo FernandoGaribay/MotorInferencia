@@ -2,6 +2,8 @@ package domain;
 
 import componentes.panelPrincipal;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JMenuItem;
 import main.Quiz;
@@ -10,12 +12,13 @@ import main.conexion;
 public class UIQuiz extends javax.swing.JFrame {
 
     private Map<String, Integer> Quizzes;
-    private JMenuItem[] menuItems;
-    private JMenuItem[] menuBorrarItems;
+    private List<JMenuItem> menuItems;
+    private List<JMenuItem> menuBorrarItems;
     private Quiz objQuiz;
 
     public UIQuiz() {
         initComponents();
+        inicializarMenus();
         eventosMenus();
 
         panelPrincipal pnlPanelPrincipal = new panelPrincipal();
@@ -69,47 +72,65 @@ public class UIQuiz extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearQuizMouseClicked
 
     private void eventosMenus() {
-        conexion conexion = new conexion();
-        actualizarMenus();
+        int j = 0;
+        while (j < menuItems.size()) {
+            final int index = j;
+            JMenuItem menuItem = menuItems.get(index);
+            JMenuItem menuDItem = menuBorrarItems.get(index);
 
-        for (int j = 0; j < menuItems.length; j++) {
-            int index = j;
-
-            menuItems[j].addActionListener((ActionEvent event) -> {
-                int quizId = Quizzes.get(menuItems[index].getText());
+            menuItem.addActionListener((ActionEvent event) -> {
+                int quizId = Quizzes.get(menuItem.getText());
                 objQuiz = new conexion().obtenerQuiz(quizId);
                 objQuiz.imprimirDatos();
                 new UIContestarQuiz(objQuiz).setVisible(true);
-                this.dispose();
+                dispose();
             });
 
-            menuBorrarItems[j].addActionListener((ActionEvent event) -> {
-                int quizId = Quizzes.get(menuBorrarItems[index].getText());
-                conexion.eliminarQuiz(quizId);
+            menuDItem.addActionListener((ActionEvent event) -> {
+                int quizId = Quizzes.get(menuDItem.getText());
+                new conexion().eliminarQuiz(quizId);
                 actualizarMenus();
             });
+
+            j++;
         }
     }
 
-    public void actualizarMenus() {
-        conexion conexion = new conexion();
-
+    public void inicializarMenus() {
         menuQuizes.removeAll();
         menuBorrarQuizes.removeAll();
-        Quizzes = conexion.obtenerQuizzes();
-        menuItems = new JMenuItem[Quizzes.keySet().size()];
-        menuBorrarItems = new JMenuItem[Quizzes.keySet().size()];
 
-        int i = 0;
+        Quizzes = new conexion().obtenerQuizzes();
+        menuItems = new ArrayList<>();
+        menuBorrarItems = new ArrayList<>();
+
         for (String nombreCampo : Quizzes.keySet()) {
             JMenuItem menuItem = new JMenuItem(nombreCampo);
             JMenuItem menuDItem = new JMenuItem(nombreCampo);
-            menuItems[i] = menuItem;
-            menuBorrarItems[i] = menuDItem;
+            menuItems.add(menuItem);
+            menuBorrarItems.add(menuDItem);
             menuQuizes.add(menuItem);
             menuBorrarQuizes.add(menuDItem);
-            i++;
         }
+        System.out.println("Menús inicializados");
+    }
+
+    public void actualizarMenus() {
+        Quizzes = new conexion().obtenerQuizzes();
+        for (int j = 0; j < menuItems.size(); j++) {
+            JMenuItem menuItem = menuItems.get(j);
+            JMenuItem menuDItem = menuBorrarItems.get(j);
+            String nombreCampo = menuItem.getText();
+
+            if (!Quizzes.containsKey(nombreCampo)) {
+                menuQuizes.remove(menuItem);
+                menuBorrarQuizes.remove(menuDItem);
+                menuItems.remove(menuItem);
+                menuBorrarItems.remove(menuDItem);
+                j--; 
+            }
+        }
+        System.out.println("Menús actualizados");
     }
 
     public static void main(String args[]) {
