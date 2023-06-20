@@ -74,15 +74,13 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlOpcionesQuiz = new javax.swing.JPanel();
         lblEnunciadoPregunta = new javax.swing.JLabel();
         pnlSeparador = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        pnlOpcionesQuiz = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        pnlOpcionesQuiz.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
-        add(pnlOpcionesQuiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 44, 880, 60));
 
         lblEnunciadoPregunta.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblEnunciadoPregunta.setForeground(new java.awt.Color(51, 51, 51));
@@ -91,11 +89,19 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
         add(lblEnunciadoPregunta, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 880, 40));
 
         pnlSeparador.setBackground(new java.awt.Color(255, 255, 255));
-        add(pnlSeparador, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 880, 10));
+        add(pnlSeparador, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 880, 10));
+
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        pnlOpcionesQuiz.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+        jScrollPane1.setViewportView(pnlOpcionesQuiz);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 880, 70));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblEnunciadoPregunta;
     private javax.swing.JPanel pnlOpcionesQuiz;
     private javax.swing.JPanel pnlSeparador;
