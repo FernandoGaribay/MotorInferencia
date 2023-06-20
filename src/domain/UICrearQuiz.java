@@ -4,7 +4,9 @@ import componentes.campoPregunta;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -15,8 +17,11 @@ import main.conexion;
 
 public class UICrearQuiz extends javax.swing.JFrame {
 
+    private Map<String, String> resultados;
+
     public UICrearQuiz() {
         initComponents();
+        resultados = new HashMap<>();
 
         campoPregunta p1 = new campoPregunta();
         campoPregunta p2 = new campoPregunta();
@@ -55,6 +60,8 @@ public class UICrearQuiz extends javax.swing.JFrame {
         txtResultado = new javax.swing.JTextField();
         btnAniadirResultados = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        areaDescripcion = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -79,12 +86,12 @@ public class UICrearQuiz extends javax.swing.JFrame {
 
         lblRespuestas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblRespuestas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRespuestas.setText("Respuestas");
+        lblRespuestas.setText("Resultados");
         pnlBackground.add(lblRespuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 280, 40));
 
         lblTitulo.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         lblTitulo.setText("Creación de Quiz.");
-        pnlBackground.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 690, 30));
+        pnlBackground.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 470, 30));
 
         btnGuardarQuiz.setText("Guardar Quiz");
         btnGuardarQuiz.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -119,7 +126,7 @@ public class UICrearQuiz extends javax.swing.JFrame {
         listResultados.setModel(new DefaultListModel<>());
         scrollResultados.setViewportView(listResultados);
 
-        pnlBackground.add(scrollResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 280, 310));
+        pnlBackground.add(scrollResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 280, 130));
 
         lblNombreQuiz.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         lblNombreQuiz.setText("Nombre del Quiz");
@@ -146,6 +153,25 @@ public class UICrearQuiz extends javax.swing.JFrame {
         });
         pnlBackground.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 15, 40, 40));
 
+        areaDescripcion.setColumns(20);
+        areaDescripcion.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        areaDescripcion.setForeground(java.awt.Color.gray);
+        areaDescripcion.setLineWrap(true);
+        areaDescripcion.setRows(5);
+        areaDescripcion.setText("Descripcion de la respuesta");
+        areaDescripcion.setBorder(BorderFactory.createCompoundBorder(areaDescripcion.getBorder(), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        areaDescripcion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                areaDescripcionFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                areaDescripcionFocusLost(evt);
+            }
+        });
+        jScrollPane1.setViewportView(areaDescripcion);
+
+        pnlBackground.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 260, 280, 180));
+
         getContentPane().add(pnlBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
 
         pack();
@@ -162,12 +188,16 @@ public class UICrearQuiz extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAniadirPreguntaActionPerformed
 
     private void btnAniadirResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirResultadosActionPerformed
-        if (!txtResultado.getText().isEmpty()) {
-            String text = txtResultado.getText();
-            DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
+        if (!txtResultado.getText().isEmpty() && !areaDescripcion.getText().isEmpty()) {
+            String resultado = txtResultado.getText();
+            String descripcion = areaDescripcion.getText();
+            resultados.put(resultado, descripcion);
 
-            model.addElement(text);
+            DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
+            model.addElement(resultado);
+
             txtResultado.setText("");
+            areaDescripcion.setText("");
 
             for (Component componente : pnlContenedorPreguntas.getComponents()) {
                 if (componente instanceof campoPregunta) {
@@ -176,18 +206,16 @@ public class UICrearQuiz extends javax.swing.JFrame {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "No puedes dejar el campo \"Añadir resultado\" vacio.");
+            JOptionPane.showMessageDialog(this, "No puedes dejar el campo \"Añadir resultado\" o \"Descipcion\" vacios.");
         }
     }//GEN-LAST:event_btnAniadirResultadosActionPerformed
 
     private void btnGuardarQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarQuizActionPerformed
-
         conexion objConexion = new conexion();
 
         String nombreQuiz;
         DefaultListModel<String> model = (DefaultListModel<String>) listResultados.getModel();
         List<Pregunta> preguntas = new ArrayList<>();
-        List<String> resultados = new ArrayList<>();
 
         if (txtNombreQuiz.getText().isEmpty() || txtNombreQuiz.getText().equals("Titulo del Quiz")) {
             JOptionPane.showMessageDialog(this, "El campo \"Nombre del Quiz\" no puede estar vacio.");
@@ -199,12 +227,6 @@ public class UICrearQuiz extends javax.swing.JFrame {
         }
 
         nombreQuiz = txtNombreQuiz.getText();
-
-        // Extraccion de datos del listado de resultados
-        for (int i = 0; i < model.getSize(); i++) {
-            String resultado = model.getElementAt(i);
-            resultados.add(resultado);
-        }
 
         for (Component componente : pnlContenedorPreguntas.getComponents()) {
             if (componente instanceof campoPregunta) {
@@ -223,18 +245,32 @@ public class UICrearQuiz extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void txtNombreQuizFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreQuizFocusGained
-        if(txtNombreQuiz.getText().equals("Titulo del Quiz")){
+        if (txtNombreQuiz.getText().equals("Titulo del Quiz")) {
             txtNombreQuiz.setText("");
             txtNombreQuiz.setForeground(Color.BLACK);
         }
     }//GEN-LAST:event_txtNombreQuizFocusGained
 
     private void txtNombreQuizFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreQuizFocusLost
-        if (txtNombreQuiz.getText().isBlank()){
+        if (txtNombreQuiz.getText().isBlank()) {
             txtNombreQuiz.setText("Titulo del Quiz");
-            txtNombreQuiz.setForeground(Color.DARK_GRAY);
+            txtNombreQuiz.setForeground(Color.GRAY);
         }
     }//GEN-LAST:event_txtNombreQuizFocusLost
+
+    private void areaDescripcionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_areaDescripcionFocusGained
+        if (areaDescripcion.getText().equals("Descripcion de la respuesta")) {
+            areaDescripcion.setText("");
+            areaDescripcion.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_areaDescripcionFocusGained
+
+    private void areaDescripcionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_areaDescripcionFocusLost
+        if (areaDescripcion.getText().isBlank()) {
+            areaDescripcion.setText("Descripcion de la respuesta");
+            areaDescripcion.setForeground(Color.GRAY);
+        }
+    }//GEN-LAST:event_areaDescripcionFocusLost
 
     public static void main(String args[]) {
 
@@ -263,10 +299,12 @@ public class UICrearQuiz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea areaDescripcion;
     private javax.swing.JButton btnAniadirPregunta;
     private javax.swing.JButton btnAniadirResultados;
     private javax.swing.JButton btnGuardarQuiz;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNombreQuiz;
     private javax.swing.JLabel lblRespuestas;
     private javax.swing.JLabel lblTitulo;

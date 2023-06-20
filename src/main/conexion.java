@@ -23,7 +23,7 @@ public class conexion {
 
     private String nombre;
     private List<Pregunta> preguntas;
-    private List<String> resultados;
+    private Map<String, String> resultados;
     private Map<String, Integer> resultadosIdMap;
 
     int idQuiz = -1;
@@ -150,10 +150,10 @@ public class conexion {
         return opciones;
     }
 
-    private List<String> obtenerResultados(int id) {
+    private Map<String, String> obtenerResultados(int id) {
         String query = "SELECT * FROM resultados WHERE idQuiz = ?";
         PreparedStatement mostrarResultados;
-        List<String> objRespuestas = new ArrayList<>();
+        Map<String, String> objRespuestas = new HashMap<>();
         resultadosIdMap = new HashMap<String, Integer>();
 
         try {
@@ -163,10 +163,11 @@ public class conexion {
 
             while (resultSet.next()) {
                 int value = resultSet.getInt("id");
-                String key = resultSet.getString("nombre");
-
-                objRespuestas.add(key);
-                resultadosIdMap.put(key, value);
+                String resultado = resultSet.getString("nombre");
+                String descripcion = resultSet.getString("descripcion");
+                
+                objRespuestas.put(resultado, descripcion);
+                resultadosIdMap.put(resultado, value);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -256,21 +257,22 @@ public class conexion {
         }
     }
 
-    private Map<String, Integer> insertarResultados(List<String> resultados) {
-        String sql = "INSERT INTO resultados (nombre, idQuiz) VALUES (?, ?)";
+    private Map<String, Integer> insertarResultados(Map<String, String> resultados) {
+        String sql = "INSERT INTO resultados (nombre, descripcion, idQuiz) VALUES (?, ?, ?)";
         PreparedStatement stInsertar;
         Map<String, Integer> resultadosIdMap = new HashMap<>();
 
         try {
-            for (String resultado : resultados) {
+            for (Map.Entry<String, String> entry : resultados.entrySet()) {
                 stInsertar = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                stInsertar.setString(1, resultado);
-                stInsertar.setString(2, String.valueOf(idQuiz));
+                stInsertar.setString(1, entry.getKey());
+                stInsertar.setString(2, entry.getValue());
+                stInsertar.setString(3, String.valueOf(idQuiz));
                 stInsertar.executeUpdate();
 
                 ResultSet rs = stInsertar.getGeneratedKeys();
                 if (rs.next()) {
-                    resultadosIdMap.put(resultado, rs.getInt(1));
+                    resultadosIdMap.put(entry.getKey(), rs.getInt(1));
                 }
             }
 
@@ -359,8 +361,8 @@ public class conexion {
 
     public static void main(String[] args) throws SQLException {
         conexion conect = new conexion();
-        
-        conect.eliminarQuiz(14);
+        testQuiz().imprimirDatos();
+        conect.guardarQuiz(testQuiz());
     }
 
     public static Quiz testQuiz() {
@@ -384,9 +386,9 @@ public class conexion {
         preguntas.add(pregunta1);
         preguntas.add(pregunta2);
 
-        List<String> resultados = new ArrayList<>();
-        resultados.add("Introvertido");
-        resultados.add("Extrovertido");
+        Map<String, String> resultados = new HashMap<>();
+        resultados.put("Introvertido", "Descripcion de Introvertido");
+        resultados.put("Extrovertido", "Descripcion de Extrovertido");
 
         Quiz objQuiz = new Quiz("Test", preguntas, resultados);
 

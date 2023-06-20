@@ -2,20 +2,21 @@ create database motorinferencia;
 use motorinferencia;
 
 create table quizzes (
-	id int primary key auto_increment,
+    id int primary key auto_increment,
     nombre varchar(255)
 );
 
 create table preguntas (
-	id int primary key auto_increment,
+    id int primary key auto_increment,
     enunciado varchar(255),
     idQuiz int,
     foreign key (idQuiz) references quizzes(id)
 );
 
 create table resultados (
-	id int primary key auto_increment,
-	nombre varchar(255),
+    id int primary key auto_increment,
+    nombre varchar(255),
+    descripcion TEXT,
     idQuiz int,
     foreign key (idQuiz) references quizzes(id)
 );

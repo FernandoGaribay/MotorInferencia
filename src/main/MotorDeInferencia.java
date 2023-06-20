@@ -6,20 +6,24 @@ import java.util.Map;
 
 public class MotorDeInferencia {
 
+    private Map<String, String> mapResultados;
     private Map<String, Integer> puntajes;
 
     public MotorDeInferencia() {
         puntajes = new HashMap<>();
+        mapResultados = null;
     }
 
-    public void evaluarRespuestas(List<Respuesta> respuestas) {
+    public void evaluarRespuestas(Quiz objQuiz, List<Respuesta> respuestas) {
+        this.mapResultados = objQuiz.getResultados();
+
         for (Respuesta respuesta : respuestas) {
             String opcionSeleccionada = respuesta.getOpcionSeleccionada().getDimension();
             if (!puntajes.containsKey(opcionSeleccionada)) {
                 puntajes.put(opcionSeleccionada, 0);
             }
         }
-        
+
         for (Respuesta respuesta : respuestas) {
             String dimension = respuesta.getOpcionSeleccionada().getDimension();
             int puntaje = respuesta.getOpcionSeleccionada().getPuntaje();
@@ -31,9 +35,9 @@ public class MotorDeInferencia {
         }
     }
 
-    public String obtenerResultado() {
+    public String[] obtenerResultado() {
         int puntajeMaximo = Integer.MIN_VALUE;
-        String resultado = "Neutral";
+        String[] resultado = {"Neutral", ""};
 
         System.out.println("");
         for (Map.Entry<String, Integer> entry : puntajes.entrySet()) {
@@ -44,12 +48,17 @@ public class MotorDeInferencia {
 
             if (puntaje > puntajeMaximo) {
                 puntajeMaximo = puntaje;
-                resultado = dimension;
+                resultado[0] = dimension;
             } else if (puntaje == puntajeMaximo) {
-                resultado = "Neutral";
+                resultado[0] = "Neutral";
             }
-        } 
+        }
+        if (mapResultados.containsKey(resultado[0])){
+            resultado[1] = mapResultados.get(resultado[0]);
+        } else {
+            resultado[1] = "Te encuentras en un estado neutral";
+        }
+        
         return resultado;
     }
-
 }

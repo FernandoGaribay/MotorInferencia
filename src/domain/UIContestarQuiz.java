@@ -107,22 +107,24 @@ public class UIContestarQuiz extends javax.swing.JFrame {
 
     private void btnTerminarQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarQuizActionPerformed
         //- Los datos se extraeran de la interfaz y de los radio buttons para conseguir el resultado
-        Respuesta respuesta;
         for (int i = 0; i < objQuizContestar.getPreguntas().size(); i++) {
-                    
             for (int j = 0; j < objQuizContestar.getPreguntas().get(i).getOpciones().size(); j++) {
                 if (j == campos.get(i).obtenerIndice()) {
-                    listaRespuestas.add(respuesta = new Respuesta(objQuizContestar.getPreguntas().get(i),objQuizContestar.getPreguntas().get(i).getOpciones().get(j)));
+                    listaRespuestas.add(new Respuesta(objQuizContestar.getPreguntas().get(i),
+                            objQuizContestar.getPreguntas().get(i).getOpciones().get(j)));
                 }
             }
         }
         
-        
         //- Una vez extraidos se ingresan a un objeto de preguntas y respuestas y se evalua
         MotorDeInferencia objMotor = new MotorDeInferencia();
-        objMotor.evaluarRespuestas(listaRespuestas);
-        JOptionPane.showMessageDialog(null, objMotor.obtenerResultado(), "Resultado", JOptionPane.INFORMATION_MESSAGE);
-        System.out.print(objMotor.obtenerResultado());
+        objMotor.evaluarRespuestas(objQuizContestar, listaRespuestas);
+        
+        String[] resultado = objMotor.obtenerResultado();
+        JOptionPane.showMessageDialog(null, 
+                resultado[0] + "\n" + resultado[1], 
+                "Resultado", 
+                JOptionPane.INFORMATION_MESSAGE);
        
         listaRespuestas = new ArrayList<>();
     }//GEN-LAST:event_btnTerminarQuizActionPerformed
