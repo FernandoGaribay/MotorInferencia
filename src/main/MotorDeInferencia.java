@@ -37,7 +37,7 @@ public class MotorDeInferencia {
 
     public String[] obtenerResultado() {
         int puntajeMaximo = Integer.MIN_VALUE;
-        String[] resultado = {"Neutral", ""};
+        String[] resultado = {"", ""};
 
         System.out.println("");
         for (Map.Entry<String, Integer> entry : puntajes.entrySet()) {
@@ -50,7 +50,7 @@ public class MotorDeInferencia {
                 puntajeMaximo = puntaje;
                 resultado[0] = dimension;
             } else if (puntaje == puntajeMaximo) {
-                resultado[0] = "Neutral";
+//                resultado[0] = "Neutral";
             }
         }
         if (mapResultados.containsKey(resultado[0])){

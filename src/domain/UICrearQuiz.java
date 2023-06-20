@@ -237,6 +237,13 @@ public class UICrearQuiz extends javax.swing.JFrame {
         Quiz objQuiz = new Quiz(nombreQuiz, preguntas, resultados);
         objQuiz.imprimirDatos();
         objConexion.guardarQuiz(objQuiz);
+
+        JOptionPane.showMessageDialog(null,
+                "El Quiz fue creado exitosamente!",
+                "Crear Quiz",
+                JOptionPane.INFORMATION_MESSAGE);
+        new UIQuiz().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnGuardarQuizActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked

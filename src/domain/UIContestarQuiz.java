@@ -79,6 +79,7 @@ public class UIContestarQuiz extends javax.swing.JFrame {
         background.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 710, 40));
 
         iconHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/home.png"))); // NOI18N
+        iconHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         iconHome.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 iconHomeMouseClicked(evt);
