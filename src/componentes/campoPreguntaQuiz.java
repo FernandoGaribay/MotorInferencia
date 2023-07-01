@@ -24,7 +24,7 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
     }
     
     public void ingresarNombresPreguntas(){
-        lblEnunciadoPregunta.setText(objPregunta.getEnunciado()); //le pone el nombr a la nueva pregunta
+        lblEnunciadoPregunta.setText(objPregunta.getEnunciado()); //Inserta el nombre a la nueva pregunta
         
         List<OpcionRespuesta> opciones = objPregunta.getOpciones();
         btnGroup = new ButtonGroup();
