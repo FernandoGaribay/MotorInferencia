@@ -36,13 +36,12 @@ public class campoPreguntaQuiz extends javax.swing.JPanel {
             radioButton.setActionCommand(Integer.toString(i));
             btnGroup.add(radioButton);
             pnlOpcionesQuiz.add(radioButton);
-            //pnlOpcionesQuiz.add(campoOpcion);
             pnlOpcionesQuiz.repaint();
             pnlOpcionesQuiz.revalidate();
         }
     }
     
-    public int obtenerIndice() {
+    public int obtenerIndice() { //Obtiene el radio button seleccionado y lo convierte en un entero que se retorna
     Enumeration<AbstractButton> buttons = btnGroup.getElements();
     int index = -1;
     while (buttons.hasMoreElements()) {
